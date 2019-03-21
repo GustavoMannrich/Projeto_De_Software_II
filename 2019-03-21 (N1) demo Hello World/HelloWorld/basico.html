@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Conceitos Básicos</title>
+    <link rel="stylesheet" href="/css/estilo.css">
+    <script src="/js/vue.min.js"></script>
+    <style>
+        .vermelho {
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body class="exercicio">
+    <div id="app" >
+        <p @click="aplicarCor = !aplicarCor" :class="{vermelho: aplicarCor}">{{ hello }}</p>
+    </div>
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                hello: 'Hello World',
+                aplicarCor: false
+            },
+            methods: {
+                //
+            },
+            computed: {
+                //
+            }
+        })
+    </script>
+</body>
+
+</html>
