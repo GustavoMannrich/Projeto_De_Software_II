@@ -1,1 +1,5 @@
- 
+Para subir a aplicação:
+-Instalar o Node.js
+-Acessar o diretório "HelloWorld" por um prompt de comando
+-Executar o comando "npm install"
+-Executar o comando "npm run HelloWorld"
