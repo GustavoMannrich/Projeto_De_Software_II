@@ -1,30 +1,47 @@
 <template>
-  <div id="app">
-    <login/>
-  </div>
+<div id="app">
+  <Dashboard/>
+</div>
+
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-import login from './components/Login.vue'
-
+import Login from '@/components/Login'
+import Dashboard from '@/components/Dashboard'
 
 export default {
-  name: 'app',
-  components: {
-    HelloWorld,
-    login
-  }
+   name: 'app',
+   components:{
+     Login,
+     Dashboard
+   },
+   data(){
+     return{
+       drawer: true
+     }
+   }
 }
-</script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+
+el: '#app',
+  data: () => ({
+      drawer: true,
+      items: [
+        { icon: 'trending_up', text: 'Most Popular' },
+        { icon: 'subscriptions', text: 'Subscriptions' },
+        { icon: 'history', text: 'History' },
+        { icon: 'featured_play_list', text: 'Playlists' },
+        { icon: 'watch_later', text: 'Watch Later' }
+      ],
+      items2: [
+        { picture: 28, text: 'Joseph' },
+        { picture: 38, text: 'Apple' },
+        { picture: 48, text: 'Xbox Ahoy' },
+        { picture: 58, text: 'Nokia' },
+        { picture: 78, text: 'MKBHD' }
+      ]
+    }),
+    props: {
+      source: String
+    }
+</script>
