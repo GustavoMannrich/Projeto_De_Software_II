@@ -19,7 +19,7 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <modal></modal>
-                <v-btn color="primary">Login</v-btn>
+                <v-btn color="primary" @click="sendData()">Login</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -37,6 +37,41 @@ export default {
   components: {
     modal
   },
-  name: 'Login'
+  name: 'Login',
+  
+  // Fazendo requisição pro beckend
+
+  // JSON para fazer login
+  data () {
+      return {
+          ip: "",
+          input: {
+              nome: "admin",
+              senha: "admin"
+          },
+          response: ""
+      }
+  },
+  mounted() {
+      this.$http.get("https://httpbin.org/ip").then(result => {
+          this.ip = result.body.origin;
+      }, error => {
+          console.error(error);
+      });
+  },
+  methods: {
+      sendData() {
+          // Pega o token
+          this.$http.post("http://localhost:8080/auth", this.input, { headers: { "content-type": "application/json" } }).then(result => {              
+              this.response = result.data; 
+              localStorage.setItem('user-token', result.data.data.token) 
+              console.log(result.data.data.token);
+          }, error => {
+              localStorage.removeItem('user-token');            
+              console.error(error);              
+              return;
+          });
+      }
+  }
 }
 </script>
