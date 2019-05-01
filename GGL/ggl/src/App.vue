@@ -1,6 +1,6 @@
 <template>
 <div id="app">
-  <Calendar/>
+  <Login/>
 </div>
 
 </template>
@@ -9,13 +9,15 @@
 import Login from '@/components/Login'
 import Dashboard from '@/components/Dashboard'
 import Calendar from '@/components/Calendar'
+import SignUp from '@/components/SignUp'
 
 export default {
    name: 'app',
    components:{
      Login,
      Dashboard,
-     Calendar
+     Calendar,
+     SignUp
    },
    data(){
      return{

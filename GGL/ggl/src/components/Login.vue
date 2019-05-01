@@ -18,6 +18,7 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
+                <modal></modal>
                 <v-btn color="primary">Login</v-btn>
               </v-card-actions>
             </v-card>
@@ -31,7 +32,11 @@
 </template>
 
 <script>
+import modal from '@/components/Modal'
 export default {
+  components: {
+    modal
+  },
   name: 'Login'
 }
 </script>
