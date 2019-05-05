@@ -28,6 +28,12 @@ public class AlunoServiceImpl implements AlunoService {
 		log.info("Buscando aluno pelo nome {}", nome);
 		return Optional.ofNullable(this.alunoRepository.findByNome(nome));
 	}
+	
+	public Optional<Aluno> buscarPorEmail(String email) {
+		log.info("Buscando aluno pelo email {}", email);
+		return Optional.ofNullable(this.alunoRepository.findByEmail(email));
+	}
+	
 	public Optional<Aluno> buscarPorId(int id) {
 		log.info("Buscando aluno pelo ID {}", id);
 		return this.alunoRepository.findById(id);

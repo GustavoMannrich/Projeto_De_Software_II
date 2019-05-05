@@ -1,5 +1,6 @@
 package com.ggl.gerenciadorestudantil.dtos;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
@@ -7,7 +8,8 @@ import org.hibernate.validator.constraints.Length;
 public class CadastroAlunoDto {
 
 	private int id;
-	private String nome;
+	private String email;
+	private String nome;	
 	private String senha;
 	
 	public int getId() {
@@ -26,6 +28,17 @@ public class CadastroAlunoDto {
 	
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+	
+	@NotEmpty(message = "Email não pode ser vazio.")
+	@Length(min = 5, max = 200, message = "Email deve conter entre 5 e 200 caracteres.")
+	@Email(message = "Email inválido.")
+	public String getEmail() {
+		return email;
+	}
+	
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 	@NotEmpty(message = "Senha não pode ser vazia.")

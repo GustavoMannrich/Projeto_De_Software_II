@@ -75,10 +75,12 @@ public class AlunoController {
 	 * @throws NoSuchAlgorithmException
 	 */
 	private void atualizarDadosAluno(Aluno aluno, AlunoDto alunoDto, BindingResult result) throws NoSuchAlgorithmException {		
-		if (!aluno.getNome().equals(alunoDto.getNome())) {
-			this.alunoService.buscarPorNome(alunoDto.getNome()).ifPresent(a -> result.addError(new ObjectError("nome", "Nome já existente.")));
-			aluno.setNome(alunoDto.getNome());
+		if (!aluno.getEmail().equals(alunoDto.getEmail())) {
+			this.alunoService.buscarPorEmail(alunoDto.getEmail()).ifPresent(a -> result.addError(new ObjectError("nome", "Email já existente.")));
+			aluno.setEmail(alunoDto.getEmail());
 		}
+		
+		aluno.setNome(alunoDto.getNome());
 		
 		if (alunoDto.getSenha().isPresent())
 			aluno.setSenha(PasswordUtils.gerarCrypt(alunoDto.getSenha().get()));
@@ -94,6 +96,7 @@ public class AlunoController {
 		AlunoDto alunoDto = new AlunoDto();
 		
 		alunoDto.setId(aluno.getId());
+		alunoDto.setEmail(alunoDto.getEmail());
 		alunoDto.setNome(alunoDto.getNome());
 
 		return alunoDto;	

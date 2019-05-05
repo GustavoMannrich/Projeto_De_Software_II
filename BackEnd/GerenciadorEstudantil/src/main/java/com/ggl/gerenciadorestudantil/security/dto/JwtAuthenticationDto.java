@@ -1,22 +1,24 @@
 package com.ggl.gerenciadorestudantil.security.dto;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 public class JwtAuthenticationDto {
 	
-	private String nome;
+	private String email;
 	private String senha;
 
 	public JwtAuthenticationDto() {
 	}
 
-	@NotEmpty(message = "Nome não pode ser vazio.")
-	public String getNome() {
-		return nome;
+	@NotEmpty(message = "Email não pode ser vazio.")
+	@Email(message = "Email inválido.")
+	public String getEmail() {
+		return email;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	@NotEmpty(message = "Senha não pode ser vazia.")
@@ -30,7 +32,7 @@ public class JwtAuthenticationDto {
 
 	@Override
 	public String toString() {
-		return "JwtAuthenticationRequestDto [email=" + nome + ", senha=" + senha + "]";
+		return "JwtAuthenticationRequestDto [email=" + email + ", senha=" + senha + "]";
 	}
 
 }

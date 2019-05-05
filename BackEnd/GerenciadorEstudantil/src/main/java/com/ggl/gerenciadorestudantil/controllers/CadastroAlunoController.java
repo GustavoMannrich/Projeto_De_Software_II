@@ -67,7 +67,7 @@ public class CadastroAlunoController {
 	 * @param result
 	 */
 	private void validarDadosExistentes(CadastroAlunoDto cadastroAlunoDto, BindingResult result) {
-		this.alunoService.buscarPorNome(cadastroAlunoDto.getNome()).ifPresent(aluno -> result.addError(new ObjectError("aluno", "Nome já existente.")));
+		this.alunoService.buscarPorEmail(cadastroAlunoDto.getEmail()).ifPresent(aluno -> result.addError(new ObjectError("aluno", "Email já existente.")));
 	}
 	
 	/**
@@ -78,6 +78,7 @@ public class CadastroAlunoController {
 	 */
 	private Aluno converterDtoParaAluno(CadastroAlunoDto cadastroAlunoDto) {
 		Aluno aluno = new Aluno();
+		aluno.setEmail(cadastroAlunoDto.getEmail());
 		aluno.setNome(cadastroAlunoDto.getNome());
 		aluno.setSenha(PasswordUtils.gerarCrypt(cadastroAlunoDto.getSenha()));
 		
@@ -87,6 +88,7 @@ public class CadastroAlunoController {
 	private CadastroAlunoDto converterCadastroAlunoDto(Aluno aluno) {
 		CadastroAlunoDto cadastroAlunoDto = new CadastroAlunoDto();
 		cadastroAlunoDto.setId(aluno.getId());
+		cadastroAlunoDto.setEmail(aluno.getEmail());
 		cadastroAlunoDto.setNome(aluno.getNome());
 		
 		return cadastroAlunoDto;

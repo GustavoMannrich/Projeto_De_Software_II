@@ -23,6 +23,14 @@ public interface AlunoService {
 	Optional<Aluno> buscarPorNome(String nome);
 	
 	/**
+	 * Busca e retorna um aluno por nome
+	 * 
+	 * @param email
+	 * @return Optional<Aluno>
+	 */
+	Optional<Aluno> buscarPorEmail(String email);
+	
+	/**
 	 * Busca e retorna um aluno por ID
 	 * 
 	 * @param id
