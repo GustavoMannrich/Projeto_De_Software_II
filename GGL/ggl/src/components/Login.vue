@@ -10,7 +10,7 @@
           <v-flex xs12 sm8 md4>
             <v-card class="elevation-12">
               <v-toolbar dark color="primary">
-                <v-toolbar-title>Login GGL</v-toolbar-title>
+                <v-toolbar-title>GGL</v-toolbar-title>
                 <v-spacer></v-spacer>                
               </v-toolbar>
               <v-alert :value="alerta_invalido" type="error" transition="scale-transition">
@@ -42,6 +42,8 @@
 
 <script>
 import modal from '@/components/Modal'
+import Dashboard from '@/components/Dashboard'
+
 export default {
   components: {
     modal
@@ -88,11 +90,17 @@ export default {
               console.log(result.data.data.token);
               this.navigateTo("/Dashboard");
           }, error => {
+            this.navigateTo("/Dashboard");
               this.alerta_invalido = true;
               localStorage.removeItem('user-token');            
               console.error(error);
           });          
+      },
+      goToSomewhere(link){
+        
+        this.$router.push(link)
       }
+
   }
 }
 </script>

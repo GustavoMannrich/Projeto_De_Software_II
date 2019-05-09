@@ -8,6 +8,7 @@ import VueRouter from 'vue-router'
 
 import Login from './components/Login.vue'
 import Dashboard from './components/Dashboard.vue'
+import Calendar from './components/Calendar.vue'
 
 Vue.use(Vuetify);
 Vue.use(VueResource);
@@ -19,7 +20,8 @@ Vue.config.productionTip = false
 
 const routes = [
   { path: '/', component: Login },
-  { path: '/dashboard', component: Dashboard }
+  { path: '/dashboard', component: Dashboard },
+  { path: '/Calendar', component: Calendar}
 ]
 
 const router = new VueRouter({
