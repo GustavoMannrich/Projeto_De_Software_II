@@ -1,12 +1,16 @@
 package com.ggl.gerenciadorestudantil.entities;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -19,6 +23,7 @@ public class Aluno implements Serializable{
 	private String email = "";
 	private String nome = "";
 	private String senha;
+	private List<Evento> eventos;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -57,10 +62,18 @@ public class Aluno implements Serializable{
 		this.senha = senha;
 	}
 
+	@OneToMany(mappedBy = "aluno", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	public List<Evento> getEventos() {
+		return eventos;
+	}
+
+	public void setEventos(List<Evento> eventos) {
+		this.eventos = eventos;
+	}
+	
 	@Override
 	public String toString() {
 		return "Aluno [id=" + id + ", nome=" + nome + ", senha=" + senha + "]";
 	}
-	
 	
 }
