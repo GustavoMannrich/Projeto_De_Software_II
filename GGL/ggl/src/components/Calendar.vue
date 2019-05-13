@@ -2,11 +2,16 @@
   <v-layout>
     
     <v-flex>
+      <v-toolbar color="light-blue" light>
+        <v-toolbar-title class="white--text">Calendário</v-toolbar-title>
+      </v-toolbar>
       <v-sheet height="500">
         <v-calendar
           :now="today"
           :value="today"
           color="primary"
+          locale="pt-br"
+          dark         
         >
           <template v-slot:day="{ date }">
             <template v-for="event in eventsMap[date]">
@@ -77,6 +82,7 @@
           details: 'Going to the beach!',
           date: '2018-12-30',
           open: false
+          
         },
         {
           title: 'Vacation',
@@ -89,6 +95,7 @@
           details: 'Going to the beach!',
           date: '2019-01-01',
           open: false
+          
         },
         {
           title: 'Meeting',

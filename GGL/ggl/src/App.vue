@@ -10,6 +10,7 @@ import Login from '@/components/Login'
 import Dashboard from '@/components/Dashboard'
 import Calendar from '@/components/Calendar'
 import SignUp from '@/components/SignUp'
+import Cursos from '@/components/Cursos'
 
 export default {
    name: 'app',
@@ -17,7 +18,8 @@ export default {
      Login,
      Dashboard,
      Calendar,
-     SignUp
+     SignUp,
+     Cursos
    },
    data(){
      return{

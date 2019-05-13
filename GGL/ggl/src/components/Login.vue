@@ -27,7 +27,7 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <modal></modal>
+                <signUp/>
                 <v-btn color="primary" @click="sendData()">Login</v-btn>                
               </v-card-actions>
             </v-card>
@@ -41,12 +41,12 @@
 </template>
 
 <script>
-import modal from '@/components/Modal'
+import signUp from '@/components/SignUp'
 import Dashboard from '@/components/Dashboard'
 
 export default {
   components: {
-    modal
+    signUp
   },
   name: 'Login',
   
@@ -89,12 +89,11 @@ export default {
               localStorage.setItem('user-token', result.data.data.token) 
               console.log(result.data.data.token);
               this.navigateTo("/Dashboard");
-          }, error => {
-            this.navigateTo("/Dashboard");
+          }, error => {            
               this.alerta_invalido = true;
               localStorage.removeItem('user-token');            
               console.error(error);
-          });          
+          });
       },
       goToSomewhere(link){
         
