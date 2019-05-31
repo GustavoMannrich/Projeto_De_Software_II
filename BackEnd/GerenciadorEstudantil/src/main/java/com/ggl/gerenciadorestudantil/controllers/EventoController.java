@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -96,7 +97,12 @@ public class EventoController {
 			return ResponseEntity.badRequest().body(response);
 		}
 		
+		 HttpHeaders responseHeaders = new HttpHeaders();
+		    responseHeaders.set("Access-Control-Allow-Origin", 
+		      "*");
+		
 		response.setData(this.converterEventoDto(evento.get()));
+		
 		return ResponseEntity.ok(response);
 	}
 	
@@ -191,7 +197,7 @@ public class EventoController {
 		eventoDto.setTitulo(evento.getTitulo());
 		eventoDto.setDescricao(evento.getDescricao());
 		eventoDto.setData(this.dateFormat.format(evento.getData()));
-		eventoDto.setAlunoiId(evento.getAluno().getId());
+		eventoDto.setAlunoId(evento.getAluno().getId());
 		
 		return eventoDto;
 	}
@@ -203,13 +209,13 @@ public class EventoController {
 	 * @param result
 	 */
 	private void validarAluno(EventoDto eventoDto, BindingResult result) {
-		if (eventoDto.getAlunoiId() == null) {
+		if (eventoDto.getAlunoId() == null) {
 			result.addError(new ObjectError("aluno", "Aluno não informado."));
 			return;
 		}
 		
-		log.info("Validando aluno id: {}", eventoDto.getAlunoiId());
-		Optional<Aluno> aluno = this.alunoService.buscarPorId(eventoDto.getAlunoiId());
+		log.info("Validando aluno id: {}", eventoDto.getAlunoId());
+		Optional<Aluno> aluno = this.alunoService.buscarPorId(eventoDto.getAlunoId());
 		if (!aluno.isPresent()) {
 			result.addError(new ObjectError("aluno", "Aluno não encontrado. ID inexistente."));
 		}
@@ -235,10 +241,10 @@ public class EventoController {
 			}
 		} else {
 			evento.setAluno(new Aluno());
-			evento.getAluno().setId(eventoDto.getAlunoiId());
+			evento.getAluno().setId(eventoDto.getAlunoId());
 		}
 		
-		evento.setTitulo(evento.getTitulo());
+		evento.setTitulo(eventoDto.getTitulo());
 		evento.setDescricao(eventoDto.getDescricao());
 		evento.setData(this.dateFormat.parse(eventoDto.getData()));
 		

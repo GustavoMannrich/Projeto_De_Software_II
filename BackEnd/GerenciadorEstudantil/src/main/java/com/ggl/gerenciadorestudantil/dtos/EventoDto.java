@@ -8,7 +8,7 @@ import javax.validation.constraints.NotEmpty;
 public class EventoDto {
 
 	private Optional<Integer> id = Optional.empty();
-	private Integer alunoiId;
+	private Integer alunoId;
 	private String titulo;
 	private String descricao;
 	private String data;
@@ -21,12 +21,12 @@ public class EventoDto {
 		this.id = id;
 	}
 	
-	public Integer getAlunoiId() {
-		return alunoiId;
+	public Integer getAlunoId() {
+		return alunoId;
 	}
 	
-	public void setAlunoiId(Integer alunoiId) {
-		this.alunoiId = alunoiId;
+	public void setAlunoId(Integer alunoId) {
+		this.alunoId = alunoId;
 	}
 	
 	public String getTitulo() {
@@ -56,7 +56,7 @@ public class EventoDto {
 
 	@Override
 	public String toString() {
-		return "EventoDto [id=" + id + ", alunoiId=" + alunoiId + ", titulo=" + titulo + ", descricao=" + descricao
+		return "EventoDto [id=" + id + ", alunoiId=" + alunoId + ", titulo=" + titulo + ", descricao=" + descricao
 				+ ", data=" + data + "]";
 	}
 	

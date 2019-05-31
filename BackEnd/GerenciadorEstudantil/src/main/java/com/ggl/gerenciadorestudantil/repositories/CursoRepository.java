@@ -11,16 +11,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ggl.gerenciadorestudantil.entities.Evento;
+import com.ggl.gerenciadorestudantil.entities.Curso;
 
 @Transactional(readOnly = true)
-@NamedQueries({@NamedQuery(name = "EventoRepository.findByAlunoId",
-						   query = "SELECT a FROM evento a WHERE a.aluno_id = :alunoId")})
+@NamedQueries({@NamedQuery(name = "CursoRepository.findByAlunoId",
+						   query = "SELECT a FROM curso a WHERE a.aluno_id = :alunoId")})
 
-public interface EventoRepository extends JpaRepository<Evento, Integer> {
+public interface CursoRepository extends JpaRepository<Curso, Integer> {
 
-	List<Evento> findByAlunoId(@Param("alunoId") Integer alunoId);
+	List<Curso> findByAlunoId(@Param("alunoId") Integer alunoId);
 
-	Page<Evento> findByAlunoId(@Param("alunoId") Integer alunoId, Pageable pageable);
+	Page<Curso> findByAlunoId(@Param("alunoId") Integer alunoId, Pageable pageable);
 	
 }

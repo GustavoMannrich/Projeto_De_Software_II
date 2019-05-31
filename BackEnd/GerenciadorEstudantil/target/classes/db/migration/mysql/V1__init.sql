@@ -14,5 +14,25 @@ CREATE TABLE `evento` (
 	`aluno_id` INT(20) DEFAULT NULL, 
 	PRIMARY KEY (`id`),
 	KEY `FK46i4k5vl8wah7feutye9kbpi4` (`aluno_id`),
-	CONSTRAINT `FK46i4k5vl8wah7feutye9kbpi4` FOREIGN KEY (`aluno_id`) REFERENCES `aluno` (`id`)
+	CONSTRAINT `FK9ufw9h2374hfuwh983fh8hf93` FOREIGN KEY (`aluno_id`) REFERENCES `aluno` (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `curso` (
+	`id` INT NOT NULL AUTO_INCREMENT , 
+	`nome` VARCHAR(30) NOT NULL ,
+	`aluno_id` INT(20) DEFAULT NULL, 
+	PRIMARY KEY (`id`),
+	KEY `FK87f8ash3j4r7f8dsfyhe8rwh8` (`aluno_id`),
+	CONSTRAINT `FK123uhesfhr3fgs78fdgf42i3i` FOREIGN KEY (`aluno_id`) REFERENCES `aluno` (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `disciplina` (
+	`id` INT NOT NULL AUTO_INCREMENT , 
+	`nome` VARCHAR(30) NOT NULL ,
+	`aluno_id` INT(20) DEFAULT NULL, 
+	`curso_id` INT(20) DEFAULT NULL,
+	PRIMARY KEY (`id`),
+	KEY `FK46gdhjasahd1372412g4i3h42` (`aluno_id`),
+	CONSTRAINT `FK83hfsjkf3f4fsfidufsudf475` FOREIGN KEY (`aluno_id`) REFERENCES `aluno` (`id`),
+	CONSTRAINT `FK312bdbfosd8fhf4tn4t4fhf89` FOREIGN KEY (`curso_id`) REFERENCES `curso` (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8;
