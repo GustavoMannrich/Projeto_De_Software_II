@@ -1,5 +1,19 @@
 # ggl
 
+npm install -g @vue/cli
+
+npm add vuetify
+
+npm install vuetify --save
+
+npm add vue-resource
+
+npm install vue-resource --save
+
+npm run serve
+
+#############################################
+
 ## Project setup
 ```
 npm install

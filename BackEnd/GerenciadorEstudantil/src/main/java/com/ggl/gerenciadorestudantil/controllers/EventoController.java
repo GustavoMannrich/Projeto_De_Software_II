@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -96,10 +95,6 @@ public class EventoController {
 			response.getErrors().add("Evento não encontrado para o id " + id);
 			return ResponseEntity.badRequest().body(response);
 		}
-		
-		 HttpHeaders responseHeaders = new HttpHeaders();
-		    responseHeaders.set("Access-Control-Allow-Origin", 
-		      "*");
 		
 		response.setData(this.converterEventoDto(evento.get()));
 		

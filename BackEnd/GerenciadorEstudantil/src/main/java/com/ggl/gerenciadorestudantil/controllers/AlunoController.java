@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -67,6 +68,29 @@ public class AlunoController {
 	}
 	
 	/**
+	 * Retorna um aluno por email
+	 * 
+	 * @param email
+	 * @return ResponseEntity<Response<EventoDto>>
+	 */
+	@GetMapping(value = "/{email}")
+	public ResponseEntity<Response<AlunoDto>> listarPorId(@PathVariable("email") String email) {
+		log.info("Buscando aluno por email: {}", email);
+		Response<AlunoDto> response = new Response<AlunoDto>();
+		Optional<Aluno> aluno = this.alunoService.buscarPorEmail(email);
+		
+		if (!aluno.isPresent()) {
+			log.info("Aluno não encontrado para o email: {}", email);
+			response.getErrors().add("Aluno não encontrado para o email " + email);
+			return ResponseEntity.badRequest().body(response);
+		}
+		
+		response.setData(this.converterAlunoDto(aluno.get()));
+		
+		return ResponseEntity.ok(response);
+	}
+	
+	/**
 	 * Atualiza os dados do aluno com base nos dados encontrados no DTO
 	 * 
 	 * @param aluno
@@ -96,8 +120,8 @@ public class AlunoController {
 		AlunoDto alunoDto = new AlunoDto();
 		
 		alunoDto.setId(aluno.getId());
-		alunoDto.setEmail(alunoDto.getEmail());
-		alunoDto.setNome(alunoDto.getNome());
+		alunoDto.setEmail(aluno.getEmail());
+		alunoDto.setNome(aluno.getNome());
 
 		return alunoDto;	
 	}

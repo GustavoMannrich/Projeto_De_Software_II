@@ -85,14 +85,24 @@ export default {
 
           // Pega o token
           this.$http.post("http://localhost:8080/auth", this.input, { headers: { "content-type": "application/json" } }).then(result => {              
-              this.response = result.data; 
-              localStorage.setItem('user-token', result.data.data.token) 
-              console.log(result.data.data.token);
-              this.navigateTo("/Dashboard");
+                this.response = result.data; 
+                localStorage.setItem('user-token', result.data.data.token) 
+                console.log(localStorage.getItem('user-token'));
+
+                this.$http.get("http://localhost:8080/api/alunos/" + this.input.email, { headers: { "content-type": "application/json" } }).then(result => {              
+                    this.response = result.data;
+                    localStorage.setItem('user-name', result.data.data.nome);
+                    localStorage.setItem('user-ID', result.data.data.id);
+                    this.navigateTo("/Dashboard");
+                }, error => {            
+                    this.alerta_invalido = true;
+                    localStorage.removeItem('user-token');            
+                    console.error(error);
+                });  
           }, error => {            
-              this.alerta_invalido = true;
-              localStorage.removeItem('user-token');            
-              console.error(error);
+                this.alerta_invalido = true;
+                localStorage.removeItem('user-token');            
+                console.error(error);
           });
       },
       goToSomewhere(link){

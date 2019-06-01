@@ -39,9 +39,9 @@
       <v-layout row align-center style="max-width: 650px">
       </v-layout>
       <v-btn color="primary" right>
-        <span>Lucas Reinert</span>
+        <span v-html="usename"></span>
       </v-btn>
-      <v-btn color="secundary" right flat>
+      <v-btn color="secundary" right flat @click="logout()">
         <v-icon>power_settings_new</v-icon>
       </v-btn>
     </v-toolbar>
@@ -61,11 +61,14 @@
   import Calendar from '@/components/Calendar'
   import Cursos from '@/components/Cursos'
   
-  export default {
+  export default {      
     components: {
       Calendar,
       Cursos
-    },
+    },      
+    beforeMount(){
+        this.verificaLogin();
+    },  
     data: () => ({
       drawer: null,
       items: [
@@ -73,7 +76,9 @@
         { icon: 'subscriptions', text: 'Cursos' },
         { icon: 'account_circle', text: 'Minha conta' }
       ],
-      janela: 'Dashboard'
+      janela: 'Dashboard',
+      usename: localStorage.getItem('user-name'),
+      userID: localStorage.getItem('user-ID')
     }),
     props: {
       source: String
@@ -87,7 +92,18 @@
       },
       verifyScreen(item){            
         return this.janela === item;
+      },
+      navigateTo(where) {
+        this.$router.push(where)
+      },
+      logout(){
+        localStorage.removeItem('user-token'),
+        this.navigateTo("/");
+      },
+      verificaLogin(){
+        if (localStorage.getItem('user-token') == null || localStorage.getItem('user-token') == "")
+            this.logout();
       }
-    }
+    },    
   }
 </script>
