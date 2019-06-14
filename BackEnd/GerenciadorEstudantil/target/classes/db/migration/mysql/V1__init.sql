@@ -36,3 +36,11 @@ CREATE TABLE `disciplina` (
 	CONSTRAINT `FK83hfsjkf3f4fsfidufsudf475` FOREIGN KEY (`aluno_id`) REFERENCES `aluno` (`id`),
 	CONSTRAINT `FK312bdbfosd8fhf4tn4t4fhf89` FOREIGN KEY (`curso_id`) REFERENCES `curso` (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `files` (
+	`id` INT NOT NULL AUTO_INCREMENT , 
+	`file_Name` VARCHAR(200) NOT NULL ,
+	`file_Type` VARCHAR(200) NOT NULL , 
+	`data` LONGBLOB NOT NULL , 
+	PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET=utf8;
