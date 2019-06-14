@@ -84,7 +84,7 @@ export default {
           } 
 
           // Pega o token
-          this.$http.post("http://localhost:8080/auth", this.input, { headers: { "content-type": "application/json" } }).then(result => {              
+          this.$http.post("http://localhost:8080/auth", this.input).then(result => {              
                 this.response = result.data; 
                 localStorage.setItem('user-token', result.data.data.token) 
                 console.log(localStorage.getItem('user-token'));

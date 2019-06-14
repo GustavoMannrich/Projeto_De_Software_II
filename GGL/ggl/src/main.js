@@ -18,6 +18,12 @@ Vue.config.productionTip = false
 
 //const Teste = { template: '<div>dashboard</div>' }
 
+Vue.http.interceptors.push((request, next) => {
+  request.headers.set('Authorization', "Bearer " + localStorage.getItem("user-token"))
+  request.headers.set('Accept', 'application/json')
+  next()
+})
+
 const routes = [
   { path: '/', component: Login },
   { path: '/dashboard', component: Dashboard },
