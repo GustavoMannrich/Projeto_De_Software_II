@@ -85,9 +85,9 @@ export default {
       // Cadastra o novo aluno
       this.$http.post("http://localhost:8080/api/cadastrar-aluno", this.input, { headers: { "content-type": "application/json"} }).then(result => {              
           this.response = result.data;
-          console.log(result.data);
+          alert(result.data);
       }, error => {         
-          console.error(error);
+          alert(error);
       });
 
       this.dialog = false;

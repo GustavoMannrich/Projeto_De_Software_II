@@ -9,6 +9,8 @@ import VueRouter from 'vue-router'
 import Login from './components/Login.vue'
 import Dashboard from './components/Dashboard.vue'
 import Calendar from './components/Calendar.vue'
+import MinhaConta from './components/MinhaConta.vue'
+import Disciplinas from './components/Disciplinas.vue'
 
 Vue.use(Vuetify);
 Vue.use(VueResource);
@@ -27,7 +29,9 @@ Vue.http.interceptors.push((request, next) => {
 const routes = [
   { path: '/', component: Login },
   { path: '/dashboard', component: Dashboard },
-  { path: '/Calendar', component: Calendar}
+  { path: '/Calendar', component: Calendar },
+  { path: '/MinhaConta', component: MinhaConta },
+  { path: '/Disciplinas', component: Disciplinas }
 ]
 
 const router = new VueRouter({

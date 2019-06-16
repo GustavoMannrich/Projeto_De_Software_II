@@ -53,6 +53,7 @@
       </v-container>-->
       <Calendar v-if="verifyScreen('Dashboard')"/>           
       <Cursos v-if="verifyScreen('Cursos')"/>
+      <MinhaConta v-if="verifyScreen('Minha conta')"/>
     </v-content>
   </v-app>
 </template>
@@ -60,12 +61,14 @@
 <script>
   import Calendar from '@/components/Calendar'
   import Cursos from '@/components/Cursos'
-  
-  export default {      
+  import MinhaConta from '@/components/MinhaConta'  
+
+  export default {
     components: {
       Calendar,
-      Cursos
-    },      
+      Cursos,
+      MinhaConta
+    },
     beforeMount(){
         this.verificaLogin();
     },  
@@ -87,10 +90,10 @@
       goToPage(item) {
         this.janela = item.text;
       },
-      goToPageByText(ïtem){
+      goToPageByText(item){
         this.janela = item
       },
-      verifyScreen(item){            
+      verifyScreen(item){
         return this.janela === item;
       },
       navigateTo(where) {
