@@ -27,7 +27,6 @@ import com.ggl.gerenciadorestudantil.response.Response;
 import com.ggl.gerenciadorestudantil.security.dto.JwtAuthenticationDto;
 import com.ggl.gerenciadorestudantil.security.dto.TokenDto;
 import com.ggl.gerenciadorestudantil.security.utils.JwtTokenUtil;
-import com.ggl.gerenciadorestudantil.services.EnvioEmail;
 
 @RestController
 @RequestMapping("/auth")
@@ -46,9 +45,6 @@ public class AuthenticationController {
 
 	@Autowired
 	private UserDetailsService userDetailsService;
-	
-	@Autowired
-	private EnvioEmail emailService;
 
 	/**
 	 * Gera e retorna um novo token JWT.
@@ -78,8 +74,6 @@ public class AuthenticationController {
 		UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationDto.getEmail());
 		String token = jwtTokenUtil.obterToken(userDetails);
 		response.setData(new TokenDto(token));
-
-		//emailService.enviar("gustavomannrich98@gmail.com", "teste", "testando");
 		
 		return ResponseEntity.ok(response);
 	}

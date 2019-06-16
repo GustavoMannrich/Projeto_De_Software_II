@@ -1,5 +1,6 @@
 package com.ggl.gerenciadorestudantil.services.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -41,4 +42,8 @@ public class EventoServiceImpl implements EventoService {
 		this.eventoRepository.deleteById(id);
 	}
 	
+	public List<Evento> buscarEventosParaNotificar() {
+		log.info("Buscando todos os eventos para notificar");
+		return this.eventoRepository.findAll();
+	}
 }

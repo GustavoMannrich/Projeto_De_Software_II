@@ -22,5 +22,6 @@ public interface EventoRepository extends JpaRepository<Evento, Integer> {
 	List<Evento> findByAlunoId(@Param("alunoId") Integer alunoId);
 
 	Page<Evento> findByAlunoId(@Param("alunoId") Integer alunoId, Pageable pageable);
-	
+
+	List<Evento> findAll();
 }

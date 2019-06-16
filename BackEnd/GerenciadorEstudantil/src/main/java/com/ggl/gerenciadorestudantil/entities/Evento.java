@@ -25,6 +25,7 @@ public class Evento implements Serializable {
 	private String descricao = "";
 	private Date data;
 	private Aluno aluno;
+	private Boolean enviouNotificacao;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -71,6 +72,15 @@ public class Evento implements Serializable {
 	
 	public void setAluno(Aluno aluno) {
 		this.aluno = aluno;
+	}
+	
+	@Column(name = "enviou_notificacao", nullable = false)
+	public Boolean getEnviouNotificacao() {
+		return enviouNotificacao;
+	}
+
+	public void setEnviouNotificacao(Boolean enviouNotificacao) {
+		this.enviouNotificacao = enviouNotificacao;
 	}
 
 	@Override

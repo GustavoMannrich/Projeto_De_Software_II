@@ -1,5 +1,6 @@
 package com.ggl.gerenciadorestudantil.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -40,4 +41,11 @@ public interface EventoService {
 	 * @param id
 	 */
 	void remover(Integer id);
+	
+	/**
+	 * Busca todos os eventos cadastrados
+	 * 
+	 * @return lista com todos os eventos
+	 */
+	List<Evento> buscarEventosParaNotificar();
 }

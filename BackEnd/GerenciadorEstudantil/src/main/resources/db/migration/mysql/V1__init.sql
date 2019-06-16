@@ -10,7 +10,8 @@ CREATE TABLE `evento` (
 	`id` INT NOT NULL AUTO_INCREMENT , 
 	`titulo` VARCHAR(30) NOT NULL ,
 	`descricao` VARCHAR(255) NOT NULL , 
-	`data` DATETIME  NOT NULL ,
+	`data` DATETIME NOT NULL ,
+	`enviou_notificacao` BOOLEAN DEFAULT FALSE,
 	`aluno_id` INT(20) DEFAULT NULL, 
 	PRIMARY KEY (`id`),
 	KEY `FK46i4k5vl8wah7feutye9kbpi4` (`aluno_id`),
@@ -42,5 +43,8 @@ CREATE TABLE `files` (
 	`file_Name` VARCHAR(200) NOT NULL ,
 	`file_Type` VARCHAR(200) NOT NULL , 
 	`data` LONGBLOB NOT NULL , 
+	`aluno_id` INT(20) DEFAULT NULL, 
+	KEY `FK46ag4hk8zkh54d246bxnmku75` (`aluno_id`),
+	CONSTRAINT `FK46ag4hk8zkh54d246bxnmku75` FOREIGN KEY (`aluno_id`) REFERENCES `aluno` (`id`),
 	PRIMARY KEY (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8;
