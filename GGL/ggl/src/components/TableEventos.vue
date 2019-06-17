@@ -26,10 +26,34 @@
             <v-container grid-list-md>
               <v-layout wrap>
                  <!-- data picker -->
-                <v-menu>
-                  <v-text-field slot="activator" label="Data" prepend-icon="date_range"></v-text-field>
-                  <v-date-picker ></v-date-picker>
-                </v-menu>
+                 <v-flex xs12 lg6>
+                  <v-menu
+                    ref="menu1"
+                    v-model="menu1"
+                    :close-on-content-click="false"
+                    :nudge-right="40"
+                    lazy
+                    transition="scale-transition"
+                    offset-y
+                    full-width
+                    max-width="290px"
+                    min-width="290px"
+                  >
+                    <template v-slot:activator="{ on }">
+                      <v-text-field
+                        v-model="dateFormatted"
+                        label="Date"                        
+                        persistent-hint
+                        prepend-icon="event"
+                        @blur="date = parseDate(dateFormatted)"
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
+                  </v-menu>
+                  
+                </v-flex>
+
                 <v-flex xs12>
                   <v-text-field v-model="editedItem.titulo" label="Titulo"></v-text-field>
                 </v-flex>
@@ -88,8 +112,11 @@
 
 <script>
   export default {
-    data: () => ({
+    data: vm => ({
       dialog: false,
+      date: new Date().toISOString().substr(0, 10),
+      dateFormatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
+      menu1: false,
       headers: [
         { text: 'Titulo', value: 'titulo' },
         { text: 'Descrição', value: 'descricao' },
@@ -111,11 +138,17 @@
     computed: {
       formTitle () {
         return this.editedIndex === -1 ? 'Novo evento' : 'Editar evento'
+      },
+      computedDateFormatted () {
+        return this.formatDate(this.date)
       }
     },
     watch: {
       dialog (val) {
         val || this.close()
+      },
+      date (val) {
+        this.dateFormatted = this.formatDate(this.date)
       }
     },
     created () {
@@ -127,18 +160,6 @@
           { headers: { "content-type": "application/json" } }).then(response => {
             this.desserts = response.body.data.content;
           });
-        // this.desserts = [
-        //   {
-        //     titulo: 'Prova',
-        //     desc: 'Assuntos: Emboscada, Inteligência artificial, Salto com vara, Genética',
-        //     dataEvento: '13/06/2019'
-        //   },
-        //   {
-        //     titulo: 'Prova II',
-        //     desc: 'Assuntos: Física quântica, Futebol, ',
-        //     dataEvento: '13/06/2019'
-        //   }
-        // ]
       },
       editItem (item) {
         this.editedIndex = this.desserts.indexOf(item)
@@ -168,7 +189,17 @@
               alert(error);
           });
         this.close()
-      }
+      },
+      formatDate (date) {
+        if (!date) return null
+        const [year, month, day] = date.split('-')
+        return `${day}/${month}/${year}`
+      },
+      parseDate (date) {
+        if (!date) return null
+        const [month, day, year] = date.split('/')
+        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+      }    
     }
   }
 </script>
