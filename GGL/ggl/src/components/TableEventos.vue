@@ -160,13 +160,13 @@
         this.editedItem.alunoId = localStorage.getItem("user-ID");        
         this.$http.post("http://localhost:8080/api/eventos", 
             '{"alunoId": ' + localStorage.getItem("user-ID") + ', "nome": "' + this.nomeNovoCurso + '"}', 
-          { headers: { "content-type": "application/json" } }).then(result => {              
+          { headers: { "content-type": "application/json" } }).then(result => {
               this.response = result.data;
               alert(this.response);
               this.listarCursos();
           }, error => {
               alert(error);
-          }); 
+          });
         this.close()
       }
     }
