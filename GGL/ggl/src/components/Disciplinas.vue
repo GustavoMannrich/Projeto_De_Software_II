@@ -1,8 +1,7 @@
 <template>
   <div id="lateral">
     <v-toolbar dark tabs flat color="indigo">
-      <v-toolbar-title>Disciplinas</v-toolbar-title>
-      <v-spacer></v-spacer>
+      <v-toolbar-title>{{idDisciplina}}</v-toolbar-title>
       
       <template v-slot:extension>
         <v-tabs
@@ -22,9 +21,9 @@
         :key="content"
         :value="content"
       >
-        <v-card height="200px" flat>
+        <v-card height="200px" flat>                        
           <TableEventos v-if="isEvent(content)"/>
-          <Calendar v-if="isCalendar(content)"/>
+          <!--<Calendar v-if="isCalendar(content)"/>-->
         </v-card>
       </v-tab-item>
     </v-tabs-items>
@@ -35,6 +34,7 @@
   import TableEventos from '@/components/TableEventos'
   import Calendar from '@/components/Calendar'
   export default {
+    props: ['idDisciplina'],
     components:{
       TableEventos,
       Calendar

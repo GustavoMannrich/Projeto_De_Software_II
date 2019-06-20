@@ -2,7 +2,7 @@
   <v-app id="inspire" dark>
     <v-navigation-drawer v-model="drawer" fixed clipped app>
       <v-list dense>
-        <v-list-tile v-for="item in items" :key="item.text"  @click="goToPage(item)">
+        <v-list-tile v-for="item in items" :key="item.text" @click="navigateTo(item.text)">
           <v-list-tile-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-tile-action>
@@ -32,10 +32,11 @@
       </v-btn>
     </v-toolbar>
     <v-content>
-      <Calendar v-if="verifyScreen('Dashboard')"/>
-      <Cursos v-if="verifyScreen('Cursos')"/>
-      <MinhaConta v-if="verifyScreen('Minha conta')"/>
-      <Disciplinas v-if="verifyScreen('Disciplinas')"/>
+      <router-view></router-view>  
+      <!--<Calendar v-if="verifyScreen('Dashboard')"/>
+      <Cursos v-else-if="verifyScreen('Cursos')"/>
+      <MinhaConta v-else-if="verifyScreen('Minha conta')"/>
+      <Disciplinas idDisciplina="1"/>-->
     </v-content>
   </v-app>
 </template>
@@ -55,9 +56,11 @@ export default {
   },
   beforeMount() {
     this.verificaLogin();
+    localStorage.setItem("screen", "Dashboard");
+    this.$router.push(Calendar)
   },
   create() {
-    localStorage.setItem("screen", "Dashboard");
+    
   },
   data: () => ({
     drawer: null,
@@ -68,7 +71,7 @@ export default {
     ],
     janela: "Dashboard",
     usename: localStorage.getItem("user-name"),
-    userID: localStorage.getItem("user-ID")
+    userID: localStorage.getItem("user-ID")    
   }),
   props: {
     source: String
@@ -76,18 +79,34 @@ export default {
   methods: {
     goToPage(item) {
       this.janela = item.text;
-      //localStorage.setItem('screen',item.text);
+      localStorage.setItem('screen',item.text);
     },
     goToPageByText(item) {
       this.janela = item;
+      localStorage.setItem('screen',item);
     },
     verifyScreen(item) {
-      //alert(localStorage.getItem('screen'));
+      //return localStorage.getItem('screen') === item
+      //alert(this.janela === item)
+      //teste
+      this.janela = localStorage.getItem('screen');
+
+      return this.janela === item
       //return localStorage.getItem('screen') === item;
-      //alert(this.janela);
-      return this.janela === item;
     },
     navigateTo(where) {
+      if (this.$router.currentRoute.path.includes("/Dashboard/")) {
+        if (where === "Dashboard") 
+            where = "Calendar";
+        else    
+            where = where.replace(/\s/g, '');         
+      } else {
+        if (where === "Dashboard") 
+            where = "Dashboard/Calendar";
+        else
+            where = "Dashboard/" + where.replace(/\s/g, '');  
+      }
+      
       this.$router.push(where);
     },
     logout() {
