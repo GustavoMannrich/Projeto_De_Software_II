@@ -1,14 +1,18 @@
 package com.ggl.gerenciadorestudantil.entities;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -20,7 +24,7 @@ public class Disciplina implements Serializable {
 	private int id;
 	private String nome;
 	private Curso curso;
-	private Aluno aluno;
+	private List<Evento> eventos;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -42,21 +46,26 @@ public class Disciplina implements Serializable {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="curso_id")
 	public Curso getCurso() {
 		return curso;
 	}
 	
 	public void setCurso(Curso curso) {
 		this.curso = curso;
-	}
+	}	
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	public Aluno getAluno() {
-		return aluno;
+	@OneToMany(mappedBy = "disciplina", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	public List<Evento> getEventos() {
+		return eventos;
 	}
-	
-	public void setAluno(Aluno aluno) {
-		this.aluno = aluno;
+
+	public void setEventos(List<Evento> eventos) {
+		this.eventos = eventos;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Disciplina [id=" + id + ", nome=" + nome + ", curso=" + curso + "]";
+	}
 }

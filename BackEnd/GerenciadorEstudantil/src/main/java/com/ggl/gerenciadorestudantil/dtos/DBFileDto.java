@@ -5,7 +5,7 @@ import java.util.Optional;
 public class DBFileDto {
 
 	private Optional<String> id = Optional.empty();
-	private Integer alunoId;
+	private Integer disciplinaId;
     private String fileName;
     private String fileType;
     
@@ -15,11 +15,11 @@ public class DBFileDto {
 	public void setId(Optional<String> id) {
 		this.id = id;
 	}
-	public Integer getAlunoId() {
-		return alunoId;
+	public Integer getDisciplinaId() {
+		return disciplinaId;
 	}
-	public void setAlunoId(Integer alunoId) {
-		this.alunoId = alunoId;
+	public void setDisciplinaId(Integer disciplinaId) {
+		this.disciplinaId = disciplinaId;
 	}
 	public String getFileName() {
 		return fileName;
@@ -35,7 +35,7 @@ public class DBFileDto {
 	}
 	@Override
 	public String toString() {
-		return "DBFileDto [id=" + id + ", alunoId=" + alunoId + ", fileName=" + fileName + ", fileType=" + fileType
+		return "DBFileDto [id=" + id + ", disciplinaId=" + disciplinaId + ", fileName=" + fileName + ", fileType=" + fileType
 				+ "]";
 	}	
 }

@@ -9,7 +9,6 @@ public class DisciplinaDto {
 	private Optional<Integer> id = Optional.empty();
 	private String nome;
 	private Integer cursoId;
-	private Integer alunoId;
 	
 	public Optional<Integer> getId() {
 		return id;
@@ -35,18 +34,10 @@ public class DisciplinaDto {
 	public void setCursoId(Integer cursoId) {
 		this.cursoId = cursoId;
 	}
-	
-	public Integer getAlunoId() {
-		return alunoId;
-	}
-	
-	public void setAlunoId(Integer alunoId) {
-		this.alunoId = alunoId;
-	}
 
 	@Override
 	public String toString() {
-		return "DisciplinaDto [id=" + id + ", nome=" + nome + ", curso=" + cursoId + ", aluno=" + alunoId + "]";
+		return "DisciplinaDto [id=" + id + ", nome=" + nome + ", curso=" + cursoId + "]";
 	}
 	
 }

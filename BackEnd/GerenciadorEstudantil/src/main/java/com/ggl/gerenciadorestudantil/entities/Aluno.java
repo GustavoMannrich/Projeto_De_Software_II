@@ -22,8 +22,7 @@ public class Aluno implements Serializable{
 	private int id;
 	private String email = "";
 	private String nome = "";
-	private String senha;
-	private List<Evento> eventos;
+	private String senha;	
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -60,16 +59,7 @@ public class Aluno implements Serializable{
 	
 	public void setSenha(String senha) {
 		this.senha = senha;
-	}
-
-	@OneToMany(mappedBy = "aluno", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	public List<Evento> getEventos() {
-		return eventos;
-	}
-
-	public void setEventos(List<Evento> eventos) {
-		this.eventos = eventos;
-	}
+	}	
 	
 	@Override
 	public String toString() {

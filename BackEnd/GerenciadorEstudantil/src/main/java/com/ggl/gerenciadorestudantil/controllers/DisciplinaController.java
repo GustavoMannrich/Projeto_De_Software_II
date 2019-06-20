@@ -29,9 +29,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ggl.gerenciadorestudantil.dtos.DisciplinaDto;
 import com.ggl.gerenciadorestudantil.entities.Aluno;
+import com.ggl.gerenciadorestudantil.entities.Curso;
 import com.ggl.gerenciadorestudantil.entities.Disciplina;
 import com.ggl.gerenciadorestudantil.response.Response;
 import com.ggl.gerenciadorestudantil.services.AlunoService;
+import com.ggl.gerenciadorestudantil.services.CursoService;
 import com.ggl.gerenciadorestudantil.services.DisciplinaService;
 
 @RestController
@@ -43,9 +45,9 @@ public class DisciplinaController {
 
 	@Autowired
 	private DisciplinaService disciplinaService;
-	
+			
 	@Autowired
-	private AlunoService alunoService;
+	private CursoService cursoService;
 	
 	@Value("${paginacao.qtd_por_pagina}")
 	private int qtdPorPagina;
@@ -59,19 +61,18 @@ public class DisciplinaController {
 	 * @param dir
 	 * @return ResponseEntity<Response<Page<DisciplinaDto>>>
 	 */
-	@GetMapping(value = "/aluno/{alunoId}/{cursoId}")
-	public ResponseEntity<Response<Page<DisciplinaDto>>> listarPorAluno(
-			@PathVariable("alunoId") int alunoId,
+	@GetMapping(value = "/curso/{cursoId}")
+	public ResponseEntity<Response<Page<DisciplinaDto>>> listarPorCurso(
 			@PathVariable("cursoId") int cursoId,
 			@RequestParam(value = "pag", defaultValue = "0") int pag,
 			@RequestParam(value = "ord", defaultValue = "id") String ord,
 			@RequestParam(value = "dir", defaultValue = "DESC") String dir) {
-		log.info("Buscando disciplinas por ID do aluno: {}, página: {}", alunoId, pag);
+		log.info("Buscando disciplinas por ID do curso: {}, página: {}", cursoId, pag);
 		Response<Page<DisciplinaDto>> response = new Response<Page<DisciplinaDto>>();
 		
 		@SuppressWarnings("deprecation")
 		PageRequest pageRequest = new PageRequest(pag, this.qtdPorPagina, Direction.valueOf(dir), ord);
-		Page<Disciplina> disciplinas = this.disciplinaService.buscarPorAlunoCursoId(alunoId, cursoId, pageRequest);
+		Page<Disciplina> disciplinas = this.disciplinaService.buscarPorCursoId(cursoId, pageRequest);
 		Page<DisciplinaDto> disciplinasDto = disciplinas.map(disciplina -> this.converterDisciplinaDto(disciplina));
 		
 		response.setData(disciplinasDto);
@@ -194,7 +195,7 @@ public class DisciplinaController {
 		
 		disciplinaDto.setId(Optional.of(disciplina.getId()));
 		disciplinaDto.setNome(disciplina.getNome());
-		disciplinaDto.setAlunoId(disciplina.getAluno().getId());
+		disciplinaDto.setCursoId(disciplina.getCurso().getId());
 		
 		return disciplinaDto;
 	}
@@ -206,15 +207,15 @@ public class DisciplinaController {
 	 * @param result
 	 */
 	private void validarAluno(DisciplinaDto disciplinaDto, BindingResult result) {
-		if (disciplinaDto.getAlunoId() == null) {
-			result.addError(new ObjectError("aluno", "Aluno não informado."));
+		if (disciplinaDto.getCursoId() == null) {
+			result.addError(new ObjectError("curso", "Curso não informado."));
 			return;
 		}
 		
-		log.info("Validando aluno id: {}", disciplinaDto.getAlunoId());
-		Optional<Aluno> aluno = this.alunoService.buscarPorId(disciplinaDto.getAlunoId());
-		if (!aluno.isPresent()) {
-			result.addError(new ObjectError("aluno", "Aluno não encontrado. ID inexistente."));
+		log.info("Validando aluno id: {}", disciplinaDto.getCursoId());
+		Optional<Curso> curso = this.cursoService.buscarPorId(disciplinaDto.getCursoId());
+		if (!curso.isPresent()) {
+			result.addError(new ObjectError("curso", "Curso não encontrado. ID inexistente."));
 		}
 	}
 	
@@ -237,8 +238,8 @@ public class DisciplinaController {
 				result.addError(new ObjectError("disciplina", "Disciplina não encontrado."));
 			}
 		} else {
-			disciplina.setAluno(new Aluno());
-			disciplina.getAluno().setId(disciplinaDto.getAlunoId());
+			disciplina.setCurso(new Curso());
+			disciplina.getCurso().setId(disciplinaDto.getCursoId());
 		}
 		
 		disciplina.setNome(disciplinaDto.getNome());

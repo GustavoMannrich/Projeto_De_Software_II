@@ -40,9 +40,9 @@ public class FileController {
     @Autowired
     private DBFileStorageService DBFileStorageService;
 
-    @PostMapping("/uploadFile/{alunoId}")
-    public UploadFileResponse uploadFile(@PathVariable("alunoId") int alunoId, @RequestParam("file") MultipartFile file) {
-        DBFile dbFile = DBFileStorageService.storeFile(alunoId, file);
+    @PostMapping("/uploadFile/{disciplinaId}")
+    public UploadFileResponse uploadFile(@PathVariable("disciplinaId") int disciplinaId, @RequestParam("file") MultipartFile file) {
+        DBFile dbFile = DBFileStorageService.storeFile(disciplinaId, file);
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/downloadFile/")
@@ -53,16 +53,16 @@ public class FileController {
                 file.getContentType(), file.getSize());
     }
 
-    @PostMapping("/uploadMultipleFiles/{alunoId}")
-    public List<UploadFileResponse> uploadMultipleFiles(@PathVariable("alunoId") int alunoId, @RequestParam("files") MultipartFile[] files) {
+    @PostMapping("/uploadMultipleFiles/{disciplinaId}")
+    public List<UploadFileResponse> uploadMultipleFiles(@PathVariable("disciplinaId") int disciplinaId, @RequestParam("files") MultipartFile[] files) {
         return Arrays.asList(files)
                 .stream()
-                .map(file -> uploadFile(alunoId, file))
+                .map(file -> uploadFile(disciplinaId, file))
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/downloadFile/{alunoId}/{fileId}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable("alunoId") int alunoId, @PathVariable("fileId") String fileId) {
+    @GetMapping("/downloadFile/{fileId}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable("fileId") String fileId) {
         // Load file from database
         DBFile dbFile = DBFileStorageService.getFile(fileId);
 
@@ -72,8 +72,8 @@ public class FileController {
                 .body(new ByteArrayResource(dbFile.getData()));
     }
     
-    @GetMapping("/files/{alunoId}")
-    public ResponseEntity<Response<Page<DBFileDto>>> listFile(@PathVariable("alunoId") int alunoId,
+    @GetMapping("/files/{disciplinaId}")
+    public ResponseEntity<Response<Page<DBFileDto>>> listFile(@PathVariable("disciplinaId") int disciplinaId,
     		@RequestParam(value = "pag", defaultValue = "0") int pag,
 			@RequestParam(value = "ord", defaultValue = "id") String ord,
 			@RequestParam(value = "dir", defaultValue = "DESC") String dir) {
@@ -81,7 +81,7 @@ public class FileController {
     	@SuppressWarnings("deprecation")
 		PageRequest pageRequest = new PageRequest(pag, this.qtdPorPagina, Direction.valueOf(dir), ord);
         // Load file from database
-        Page<DBFile> files = DBFileStorageService.getAllFiles(alunoId, pageRequest);
+        Page<DBFile> files = DBFileStorageService.getAllFiles(disciplinaId, pageRequest);
         Page<DBFileDto> filesDto = files.map(f -> this.converterFileDto(f));
         
         Response<Page<DBFileDto>> response = new Response<Page<DBFileDto>>();
@@ -111,7 +111,7 @@ public class FileController {
     	fileDto.setId(Optional.of(file.getId()));
     	fileDto.setFileName(file.getFileName());
     	fileDto.setFileType(file.getFileType());
-    	fileDto.setAlunoId(file.getAluno().getId());
+    	fileDto.setDisciplinaId(file.getDisciplina().getId());
 		
 		return fileDto;
 	}

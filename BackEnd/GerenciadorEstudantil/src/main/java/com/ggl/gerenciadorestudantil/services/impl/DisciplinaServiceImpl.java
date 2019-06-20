@@ -21,9 +21,9 @@ public class DisciplinaServiceImpl implements DisciplinaService {
 	@Autowired
 	private DisciplinaRepository disciplinaRepository;
 	
-	public Page<Disciplina> buscarPorAlunoCursoId(Integer alunoId, Integer cursoId, PageRequest pageRequest) {
-		log.info("Buscando disciplinas para o aluno ID {}", alunoId);
-		return this.disciplinaRepository.findByAlunoAndCursoId(alunoId, cursoId, pageRequest);
+	public Page<Disciplina> buscarPorCursoId(Integer cursoId, PageRequest pageRequest) {
+		log.info("Buscando disciplinas para o curso ID {}", cursoId);
+		return this.disciplinaRepository.findByCursoId(cursoId, pageRequest);
 	}
 	
 	public Optional<Disciplina> buscarPorId(Integer id) {

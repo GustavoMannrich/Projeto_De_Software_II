@@ -11,6 +11,15 @@ import com.ggl.gerenciadorestudantil.entities.Evento;
 public interface EventoService {
 	
 	/**
+	 * Retorna uma lista paginada de eventos de uma determinada disciplina
+	 * 
+	 * @param disciplinaId
+	 * @param pageRequest
+	 * @return Page<Evento>
+	 */
+	Page<Evento> buscarPorDisciplinaId(Integer disciplinaId, PageRequest pageRequest);
+	
+	/**
 	 * Retorna uma lista paginada de eventos de um determinado aluno
 	 * 
 	 * @param alunoId

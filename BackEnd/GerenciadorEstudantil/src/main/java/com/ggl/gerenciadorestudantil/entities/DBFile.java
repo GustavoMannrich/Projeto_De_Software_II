@@ -14,17 +14,17 @@ public class DBFile implements Serializable {
     private String fileName;
     private String fileType;
     private byte[] data;
-    private Aluno aluno;
+    private Disciplina disciplina;
 
     public DBFile() {
     	
     }    		
     
-    public DBFile(String fileName, String fileType, byte[] data, Aluno aluno) {
+    public DBFile(String fileName, String fileType, byte[] data, Disciplina disciplina) {
         this.fileName = fileName;
         this.fileType = fileType;
         this.data = data;
-        this.aluno = aluno;
+        this.disciplina = disciplina;
     }
 
     @Id
@@ -66,16 +66,17 @@ public class DBFile implements Serializable {
 	}
     
 	@ManyToOne(fetch = FetchType.EAGER)
-	public Aluno getAluno() {
-		return aluno;
+	@JoinColumn(name="disciplina_id")
+	public Disciplina getDisciplina() {
+		return disciplina;
 	}
 	
-	public void setAluno(Aluno aluno) {
-		this.aluno = aluno;
+	public void setDisciplina(Disciplina disciplina) {
+		this.disciplina = disciplina;
 	}
 
 	@Override
 	public String toString() {
-		return "DBFile [id=" + id + ", fileName=" + fileName + ", fileType=" + fileType + ", aluno=" + aluno + "]";
+		return "DBFile [id=" + id + ", fileName=" + fileName + ", fileType=" + fileType + ", disciplina=" + disciplina + "]";
 	}
 }

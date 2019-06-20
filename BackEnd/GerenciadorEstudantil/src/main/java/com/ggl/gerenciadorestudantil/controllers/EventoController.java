@@ -29,9 +29,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ggl.gerenciadorestudantil.dtos.EventoDto;
 import com.ggl.gerenciadorestudantil.entities.Aluno;
+import com.ggl.gerenciadorestudantil.entities.Disciplina;
 import com.ggl.gerenciadorestudantil.entities.Evento;
 import com.ggl.gerenciadorestudantil.response.Response;
 import com.ggl.gerenciadorestudantil.services.AlunoService;
+import com.ggl.gerenciadorestudantil.services.DisciplinaService;
 import com.ggl.gerenciadorestudantil.services.EventoService;
 
 @RestController
@@ -46,10 +48,37 @@ public class EventoController {
 	private EventoService eventoService;
 	
 	@Autowired
-	private AlunoService alunoService;
+	private DisciplinaService disciplinaService;
 	
 	@Value("${paginacao.qtd_por_pagina}")
 	private int qtdPorPagina;
+	
+	/**
+	 * Retorna a listagem de eventos de um aluno
+	 * 
+	 * @param alunoId
+	 * @param pag
+	 * @param ord
+	 * @param dir
+	 * @return ResponseEntity<Response<Page<EventoDto>>>
+	 */
+	@GetMapping(value = "/disciplina/{disciplinaId}")
+	public ResponseEntity<Response<Page<EventoDto>>> listarPorDisciplina(
+			@PathVariable("disciplinaId") int disciplinaId,
+			@RequestParam(value = "pag", defaultValue = "0") int pag,
+			@RequestParam(value = "ord", defaultValue = "id") String ord,
+			@RequestParam(value = "dir", defaultValue = "DESC") String dir) {
+		log.info("Buscando eventos por ID da disciplina: {}, página: {}", disciplinaId, pag);
+		Response<Page<EventoDto>> response = new Response<Page<EventoDto>>();
+		
+		@SuppressWarnings("deprecation")
+		PageRequest pageRequest = new PageRequest(pag, this.qtdPorPagina, Direction.valueOf(dir), ord);
+		Page<Evento> eventos = this.eventoService.buscarPorDisciplinaId(disciplinaId, pageRequest);
+		Page<EventoDto> eventosDto = eventos.map(evento -> this.converterEventoDto(evento));
+		
+		response.setData(eventosDto);
+		return ResponseEntity.ok(response);
+	}
 	
 	/**
 	 * Retorna a listagem de eventos de um aluno
@@ -114,7 +143,7 @@ public class EventoController {
 														 BindingResult result) throws ParseException {
 		log.info("Adicionando evento: {}", eventoDto.toString());
 		Response<EventoDto> response = new Response<EventoDto>();
-		validarAluno(eventoDto, result);
+		validarDisciplina(eventoDto, result);
 		Evento evento = this.converterDtoParaEvento(eventoDto, result);
 		
 		if (result.hasErrors()) {
@@ -142,7 +171,7 @@ public class EventoController {
 			@Valid @RequestBody EventoDto eventoDto, BindingResult result) throws ParseException {
 		log.info("Atualizando evento: {}", eventoDto.toString());
 		Response<EventoDto> response = new Response<EventoDto>();
-		validarAluno(eventoDto, result);
+		validarDisciplina(eventoDto, result);
 		eventoDto.setId(Optional.of(id));
 		Evento evento = this.converterDtoParaEvento(eventoDto, result);
 
@@ -192,7 +221,7 @@ public class EventoController {
 		eventoDto.setTitulo(evento.getTitulo());
 		eventoDto.setDescricao(evento.getDescricao());
 		eventoDto.setData(this.dateFormat.format(evento.getData()));
-		eventoDto.setAlunoId(evento.getAluno().getId());
+		eventoDto.setDisciplinaId(evento.getDisciplina().getId());
 		
 		return eventoDto;
 	}
@@ -203,16 +232,16 @@ public class EventoController {
 	 * @param eventoDto
 	 * @param result
 	 */
-	private void validarAluno(EventoDto eventoDto, BindingResult result) {
-		if (eventoDto.getAlunoId() == null) {
-			result.addError(new ObjectError("aluno", "Aluno não informado."));
+	private void validarDisciplina(EventoDto eventoDto, BindingResult result) {
+		if (eventoDto.getDisciplinaId() == null) {
+			result.addError(new ObjectError("disciplina", "Disciplina não informado."));
 			return;
 		}
 		
-		log.info("Validando aluno id: {}", eventoDto.getAlunoId());
-		Optional<Aluno> aluno = this.alunoService.buscarPorId(eventoDto.getAlunoId());
-		if (!aluno.isPresent()) {
-			result.addError(new ObjectError("aluno", "Aluno não encontrado. ID inexistente."));
+		log.info("Validando aluno id: {}", eventoDto.getDisciplinaId());
+		Optional<Disciplina> disciplina = this.disciplinaService.buscarPorId(eventoDto.getDisciplinaId());
+		if (!disciplina.isPresent()) {
+			result.addError(new ObjectError("disciplina", "Disciplina não encontrada. ID inexistente."));
 		}
 	}
 	
@@ -232,11 +261,11 @@ public class EventoController {
 			if (evt.isPresent()) {
 				evento = evt.get();				
 			} else {
-				result.addError(new ObjectError("evento", "EVento não encontrado."));
+				result.addError(new ObjectError("evento", "Evento não encontrado."));
 			}
 		} else {
-			evento.setAluno(new Aluno());
-			evento.getAluno().setId(eventoDto.getAlunoId());
+			evento.setDisciplina(new Disciplina());
+			evento.getDisciplina().setId(eventoDto.getDisciplinaId());
 		}
 		
 		evento.setTitulo(eventoDto.getTitulo());

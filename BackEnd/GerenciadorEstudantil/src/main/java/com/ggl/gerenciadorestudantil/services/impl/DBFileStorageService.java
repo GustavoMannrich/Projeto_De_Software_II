@@ -9,10 +9,12 @@ import org.springframework.data.domain.PageRequest;
 
 import com.ggl.gerenciadorestudantil.entities.Aluno;
 import com.ggl.gerenciadorestudantil.entities.DBFile;
+import com.ggl.gerenciadorestudantil.entities.Disciplina;
 import com.ggl.gerenciadorestudantil.exceptions.FileStorageException;
 import com.ggl.gerenciadorestudantil.exceptions.MyFileNotFoundException;
 import com.ggl.gerenciadorestudantil.repositories.AlunoRepository;
 import com.ggl.gerenciadorestudantil.repositories.DBFileRepository;
+import com.ggl.gerenciadorestudantil.repositories.DisciplinaRepository;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -23,9 +25,9 @@ public class DBFileStorageService {
     private DBFileRepository dbFileRepository;
     
     @Autowired
-    private AlunoRepository alunoRepository;
+    private DisciplinaRepository disciplinaRepository;
 
-    public DBFile storeFile(int alunoId, MultipartFile file) {
+    public DBFile storeFile(int disciplinaId, MultipartFile file) {
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
@@ -35,9 +37,9 @@ public class DBFileStorageService {
                 throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
             }
 
-            Optional <Aluno> aluno = alunoRepository.findById(alunoId);
+            Optional <Disciplina> disciplina = disciplinaRepository.findById(disciplinaId);
             
-            DBFile dbFile = new DBFile(fileName, file.getContentType(), file.getBytes(), aluno.get());
+            DBFile dbFile = new DBFile(fileName, file.getContentType(), file.getBytes(), disciplina.get());
 
             return dbFileRepository.save(dbFile);
         } catch (IOException ex) {
@@ -51,7 +53,7 @@ public class DBFileStorageService {
     }
     
     public Page<DBFile> getAllFiles(int alunoId, PageRequest pageRequest) {
-    	return dbFileRepository.findByAlunoId(alunoId, pageRequest);
+    	return dbFileRepository.findByDisciplinaId(alunoId, pageRequest);
     }
     
     public void remover(String id) {

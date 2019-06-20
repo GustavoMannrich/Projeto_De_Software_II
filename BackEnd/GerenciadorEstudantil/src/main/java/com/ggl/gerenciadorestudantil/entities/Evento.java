@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.TemporalType;
@@ -24,7 +25,7 @@ public class Evento implements Serializable {
 	private String titulo = "";
 	private String descricao = "";
 	private Date data;
-	private Aluno aluno;
+	private Disciplina disciplina;
 	private Boolean enviouNotificacao;
 	
 	@Id
@@ -66,12 +67,13 @@ public class Evento implements Serializable {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	public Aluno getAluno() {
-		return aluno;
+	@JoinColumn(name="disciplina_id")
+	public Disciplina getDisciplina() {
+		return disciplina;
 	}
 	
-	public void setAluno(Aluno aluno) {
-		this.aluno = aluno;
+	public void setDisciplina(Disciplina disciplina) {
+		this.disciplina = disciplina;
 	}
 	
 	@Column(name = "enviou_notificacao", nullable = false)
@@ -85,8 +87,8 @@ public class Evento implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Evento [id=" + id + ", titulo=" + titulo + ", descricao=" + descricao + ", data=" + data + ", aluno="
-				+ aluno + "]";
+		return "Evento [id=" + id + ", titulo=" + titulo + ", descricao=" + descricao + ", data=" + data + ", disciplina="
+				+ disciplina + "]";
 	}
 	
 }

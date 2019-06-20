@@ -16,7 +16,7 @@ public interface DisciplinaService {
 	 * @param pageRequest
 	 * @return Page<Evento>
 	 */
-	Page<Disciplina> buscarPorAlunoCursoId(Integer alunoId, Integer cursoId, PageRequest pageRequest);
+	Page<Disciplina> buscarPorCursoId(Integer cursoId, PageRequest pageRequest);
 	
 	/**
 	 * Retorna uma disciplina por ID

@@ -25,9 +25,6 @@ public class NotificacaoManager implements CommandLineRunner {
 	@Autowired
 	private EventoService eventoService;
 	
-	@Autowired
-	private EnvioEmail emailService;
-	
 	@Override
     public void run(String...args) throws Exception {
 		timer = new Timer();
@@ -48,7 +45,7 @@ public class NotificacaoManager implements CommandLineRunner {
 		long diasRestantes = 0;
 		
 		for (Evento e : eventos) {
-			if (!e.getEnviouNotificacao() && !e.getAluno().getEmail().equalsIgnoreCase("admin@gmail.com")) {
+			if (!e.getEnviouNotificacao() && !e.getDisciplina().getCurso().getAluno().getEmail().equalsIgnoreCase("admin@gmail.com")) {
 				tempoRestante = e.getData().getTime() - new Date().getTime();
 				diasRestantes = TimeUnit.DAYS.convert(tempoRestante, TimeUnit.MILLISECONDS);
 				

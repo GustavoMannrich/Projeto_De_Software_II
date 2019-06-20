@@ -22,6 +22,11 @@ public class EventoServiceImpl implements EventoService {
 	@Autowired
 	private EventoRepository eventoRepository;
 	
+	public Page<Evento> buscarPorDisciplinaId(Integer disciplinaId, PageRequest pageRequest) {
+		log.info("Buscando eventos para a disciplina ID {}", disciplinaId);
+		return this.eventoRepository.findByDisciplinaId(disciplinaId, pageRequest);
+	}
+	
 	public Page<Evento> buscarPorAlunoId(Integer alunoId, PageRequest pageRequest) {
 		log.info("Buscando eventos para o aluno ID {}", alunoId);
 		return this.eventoRepository.findByAlunoId(alunoId, pageRequest);
