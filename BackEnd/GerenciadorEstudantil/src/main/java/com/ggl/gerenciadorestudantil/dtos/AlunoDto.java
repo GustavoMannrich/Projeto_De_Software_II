@@ -13,6 +13,7 @@ public class AlunoDto {
 	private String email;
 	private String nome;
 	private Optional<String> senha = Optional.empty();
+	private boolean receber_notificacoes;
 	
 	public int getId() {
 		return id;
@@ -50,10 +51,19 @@ public class AlunoDto {
 	public void setSenha(Optional<String> senha) {
 		this.senha = senha;
 	}
+	
+	public boolean getReceber_notificacoes() {
+		return receber_notificacoes;
+	}
+
+	public void setReceber_notificacoes(boolean receber_notificacoes) {
+		this.receber_notificacoes = receber_notificacoes;
+	}
 
 	@Override
 	public String toString() {
-		return "AlunoDto [id=" + id + ", nome=" + nome + ", senha=" + senha + "]";
+		return "AlunoDto [id=" + id + ", email=" + email + ", nome=" + nome + ", senha=" + senha
+				+ ", receber_notificacoes=" + receber_notificacoes + "]";
 	}
 	
 }

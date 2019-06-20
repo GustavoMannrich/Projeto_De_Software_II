@@ -3,6 +3,7 @@ CREATE TABLE `aluno` (
 	`email` VARCHAR(200) NOT NULL ,
 	`nome` VARCHAR(255) NOT NULL , 
 	`senha` VARCHAR(255) NOT NULL , 
+	`receber_notificacoes` BOOLEAN NOT NULL ,
 	PRIMARY KEY (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8;
 

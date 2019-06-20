@@ -104,8 +104,9 @@ public class AlunoController {
 			aluno.setEmail(alunoDto.getEmail());
 		}
 		
-		aluno.setNome(alunoDto.getNome());
-		
+		aluno.setNome(alunoDto.getNome());		
+		aluno.setReceber_notificacoes(alunoDto.getReceber_notificacoes());
+			
 		if (alunoDto.getSenha().isPresent())
 			aluno.setSenha(PasswordUtils.gerarCrypt(alunoDto.getSenha().get()));
 	}
@@ -122,7 +123,9 @@ public class AlunoController {
 		alunoDto.setId(aluno.getId());
 		alunoDto.setEmail(aluno.getEmail());
 		alunoDto.setNome(aluno.getNome());
-
+				
+		alunoDto.setReceber_notificacoes(aluno.getReceber_notificacoes());
+			
 		return alunoDto;	
 	}
 }

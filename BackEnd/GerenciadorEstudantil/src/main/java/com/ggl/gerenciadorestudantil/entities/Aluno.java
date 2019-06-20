@@ -23,6 +23,7 @@ public class Aluno implements Serializable{
 	private String email = "";
 	private String nome = "";
 	private String senha;	
+	private boolean receber_notificacoes;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -61,9 +62,19 @@ public class Aluno implements Serializable{
 		this.senha = senha;
 	}	
 	
+	@Column(name = "receber_notificacoes", nullable = false)
+	public boolean getReceber_notificacoes() {
+		return receber_notificacoes;
+	}
+
+	public void setReceber_notificacoes(boolean receber_notificacoes) {
+		this.receber_notificacoes = receber_notificacoes;
+	}
+
 	@Override
 	public String toString() {
-		return "Aluno [id=" + id + ", nome=" + nome + ", senha=" + senha + "]";
+		return "Aluno [id=" + id + ", email=" + email + ", nome=" + nome + ", senha=" + senha + ", receber_notificacoes="
+				+ receber_notificacoes + "]";
 	}
 	
 }

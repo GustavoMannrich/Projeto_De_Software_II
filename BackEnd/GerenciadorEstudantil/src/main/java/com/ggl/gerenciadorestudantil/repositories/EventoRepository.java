@@ -38,5 +38,10 @@ public interface EventoRepository extends JpaRepository<Evento, Integer> {
 			+ "WHERE d.id = :alunoId", nativeQuery = true)	
 	Page<Evento> findByAlunoId(@Param("alunoId") Integer alunoId, Pageable pageable);
 	
-	List<Evento> findAll();
+	@Query(value = "SELECT * FROM evento a "
+			+ "INNER JOIN disciplina b ON b.id = a.disciplina_id "
+			+ "INNER JOIN curso c ON c.id = b.curso_id "
+			+ "INNER JOIN aluno d ON d.id = c.aluno_id "
+			+ "WHERE d.receber_notificacoes = true" ,nativeQuery = true)
+	List<Evento> findEventosParaNotificar();
 }

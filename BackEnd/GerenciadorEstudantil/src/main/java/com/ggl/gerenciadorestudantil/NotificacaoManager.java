@@ -25,6 +25,9 @@ public class NotificacaoManager implements CommandLineRunner {
 	@Autowired
 	private EventoService eventoService;
 	
+	@Autowired
+	private EnvioEmail emailService;
+	
 	@Override
     public void run(String...args) throws Exception {
 		timer = new Timer();
@@ -45,12 +48,12 @@ public class NotificacaoManager implements CommandLineRunner {
 		long diasRestantes = 0;
 		
 		for (Evento e : eventos) {
-			if (!e.getEnviouNotificacao() && !e.getDisciplina().getCurso().getAluno().getEmail().equalsIgnoreCase("admin@gmail.com")) {
+			if ((e.getEnviouNotificacao() == null || !e.getEnviouNotificacao()) && e.getDisciplina().getCurso().getAluno().getReceber_notificacoes()) {
 				tempoRestante = e.getData().getTime() - new Date().getTime();
 				diasRestantes = TimeUnit.DAYS.convert(tempoRestante, TimeUnit.MILLISECONDS);
 				
 				if (diasRestantes <= 1 && diasRestantes > -1) {
-					//emailService.enviar(e.getAluno().getEmail(), "GGL Notificação - " + e.getTitulo(), "Email enviado automaticamente pelo sistema GGL. Se você não se cadastrou para receber este email por favor ignore.\n\n Notificação: " + e.getDescricao());
+					emailService.enviar(e.getDisciplina().getCurso().getAluno().getEmail(), "GGL Notificação - " + e.getTitulo(), "Email enviado automaticamente pelo sistema GGL. Se você não se cadastrou para receber este email por favor ignore.\n\n Notificação: " + e.getDescricao());
 					e.setEnviouNotificacao(true);
 					eventoService.persistir(e);
 					System.out.println ("Enviou email para: " + e.toString());

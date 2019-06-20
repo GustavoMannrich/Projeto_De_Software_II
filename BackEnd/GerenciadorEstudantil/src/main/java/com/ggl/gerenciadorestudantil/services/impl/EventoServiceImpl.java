@@ -49,6 +49,6 @@ public class EventoServiceImpl implements EventoService {
 	
 	public List<Evento> buscarEventosParaNotificar() {
 		log.info("Buscando todos os eventos para notificar");
-		return this.eventoRepository.findAll();
+		return this.eventoRepository.findEventosParaNotificar();
 	}
 }
