@@ -113,6 +113,7 @@
       ],
       desserts: [],
       editedIndex: -1,
+      editando: false,
       editedItem: {
         titulo: '',
         descricao: '',
@@ -141,26 +142,29 @@
       }
     },
     created () {
-      this.initialize()
+      this.carregarEventos()
     },
     methods: {
-      initialize () {
+      carregarEventos () {
         this.$http.get("http://localhost:8080/api/eventos/disciplina/" + this.idDisciplina,
           { headers: { "content-type": "application/json" } }).then(response => {
             this.desserts = response.body.data.content;
+            return;
           });
+
+        this.desserts = [];
       },
-      editItem (item) {
-        this.editedIndex = this.desserts.indexOf(item)
+      editItem (item) {  
+        this.editando = true;        
         this.editedItem = Object.assign({}, item)
-        this.dialog = true
+        this.dialog = true;
       },
       removerEvento(event) {
         // Remove o evento
         this.$http.delete("http://localhost:8080/api/eventos/" + event.id, 
         { headers: { "content-type": "application/json" } }).then(result => {              
             this.response = result.data;
-            this.listarEventos();
+            this.carregarEventos();
             //alert(this.response);
         }, error => {
             //alert(error);
@@ -173,17 +177,33 @@
           this.editedIndex = -1
         }, 300)
       },
-      CadastrarEvento (idDisciplina) {                
-        this.$http.post("http://localhost:8080/api/eventos", 
+      CadastrarEvento (idDisciplina) {         
+        if (this.editando) {
+          this.$http.put("http://localhost:8080/api/eventos/" + this.editedItem.id, 
             '{"disciplinaId": ' + idDisciplina + ', "data": "' + this.editedItem.data + '", "descricao": "' + this.editedItem.descricao + '", "titulo": "' + this.editedItem.titulo + '"}', 
           { headers: { "content-type": "application/json" } }).then(result => {
               debugger
               this.response = result.data;
               //alert('sucesso' + this.response);
-              this.listarCursos();
+              this.carregarEventos();
           }, error => {
               //alert(error);
           });
+
+          this.editando = false;
+        } else {
+          this.$http.post("http://localhost:8080/api/eventos", 
+            '{"disciplinaId": ' + idDisciplina + ', "data": "' + this.editedItem.data + '", "descricao": "' + this.editedItem.descricao + '", "titulo": "' + this.editedItem.titulo + '"}', 
+          { headers: { "content-type": "application/json" } }).then(result => {
+              debugger
+              this.response = result.data;
+              //alert('sucesso' + this.response);
+              this.carregarEventos();
+          }, error => {
+              //alert(error);
+          });
+        }
+        
         this.close()
       },
       formatDate (date) {

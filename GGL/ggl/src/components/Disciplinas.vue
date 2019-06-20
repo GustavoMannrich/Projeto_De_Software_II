@@ -44,7 +44,7 @@
       tabs: null
     }),
     methods: {
-      isEvents(tab) {
+      isEvent(tab) {
         return tab == 'events';
       },
       isFiles(tab) {
