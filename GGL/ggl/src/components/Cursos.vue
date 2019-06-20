@@ -12,7 +12,7 @@
             <v-subheader inset style="height: 20px"></v-subheader>       
             <v-list-group
                 v-for="item in items"
-                :key="item.nome"
+                :key="item.id"
                 v-model="item.mostrarDisciplinas"
                 no-action
             >
@@ -24,13 +24,29 @@
                     <v-list-tile-content>
                     <v-list-tile-title>{{ item.nome }}</v-list-tile-title>
                     </v-list-tile-content>
-                    <v-btn fab flat small @click="">
-                    <v-icon>add_alarm</v-icon>
-                    </v-btn>
+                    <v-dialog :key="item.id" v-model="item.cadastrarDisciplina" max-width="500px">
+                        <template v-slot:activator="{ on }">
+                            <div v-ripple v-on="on">
+                                <v-btn fab flat small @click="cadastrarDisciplina = true">
+                                    <v-icon>add_alarm</v-icon>
+                                </v-btn>
+                            </div>
+                        </template>
+                        <v-card>
+                        <v-card-text>
+                        <v-text-field label="Disciplina" v-model="nomeNovaDisciplina"></v-text-field>
+                        </v-card-text>
+                        <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn flat color="primary" @click="dialog = false">Cancelar</v-btn>
+                        <v-btn flat color="secundary" @click="adicionarDisciplina(item)">Criar Disciplina</v-btn>
+                        </v-card-actions>
+                        </v-card>
+                    </v-dialog>
                     <v-dialog :key="item.id" v-model="item.open" max-width="600px">
                     <template v-slot:activator="{ on }">
                         <div v-if="!item.time" v-ripple v-on="on">
-                        <v-btn fab flat small @click="editCursos(item)">
+                        <v-btn fab flat small>
                             <v-icon>edit</v-icon>
                         </v-btn>
                         </div>
@@ -45,7 +61,7 @@
                         <v-btn flat color="secundary" @click="editarCurso(item)">Salvar</v-btn>
                         </v-card-actions>
                     </v-card>
-                    </v-dialog>
+                    </v-dialog> 
                     <v-btn fab flat small @click="removerCurso(item)">
                     <v-icon>delete</v-icon>
                     </v-btn>
@@ -53,49 +69,35 @@
                 </template>
                 <v-list-tile
                 v-for="subItem in item.disciplinas"
-                :key="subItem.nome"
+                :key="subItem.id"
               >
                 <v-list-tile-content>
-                  <v-list-tile-title @click="goToPage('Disciplinas')">{{ subItem.nome }}</v-list-tile-title>
+                  <v-list-tile-title @click="goToDetalhesDisciplina(subItem)">{{ subItem.nome }}</v-list-tile-title>                  
                 </v-list-tile-content>
+                <v-dialog :key="subItem.id" v-model="subItem.open" max-width="600px">
+                    <template v-slot:activator="{ on }">
+                        <div v-ripple v-on="on">
+                        <v-btn fab flat small>
+                            <v-icon>edit</v-icon>
+                        </v-btn>
+                        </div>
+                    </template> 
+                    <v-card min-width="350px" flat>
+                        <v-card-title primary-title>
+                        <v-text-field :label="item.nome" v-model="nomeAlterarDisciplina"></v-text-field>
+                        </v-card-title>
+                        <v-card-actions>                  
+                        <v-spacer></v-spacer>
+                        <v-btn flat color="primary" @click="subItem.open = false">Cancelar</v-btn>
+                        <v-btn flat color="secundary" @click="editarDisciplina(item, subItem)">Salvar</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+                <v-btn fab flat small @click="removerDisciplina(item, subItem)">
+                    <v-icon>delete</v-icon>
+                </v-btn> 
               </v-list-tile>
             </v-list-group>
-
-          <!--<v-subheader inset style="height: 20px"></v-subheader>
-          <v-list-tile v-for="item in items" :key="item.nome" avatar>
-            <v-list-tile-avatar>
-              <v-icon :class="'grey lighten-1 white--text'">{{ 'folder' }}</v-icon>
-            </v-list-tile-avatar>
-            <v-list-tile-content>
-              <v-list-tile-title>{{ item.nome }}</v-list-tile-title>
-            </v-list-tile-content>
-            <v-btn fab flat small @click="">
-              <v-icon>add_alarm</v-icon>
-            </v-btn>
-            <v-dialog :key="item.id" v-model="item.open" max-width="600px">
-              <template v-slot:activator="{ on }">
-                <div v-if="!item.time" v-ripple v-on="on">
-                  <v-btn fab flat small @click="editCursos(item)">
-                    <v-icon>edit</v-icon>
-                  </v-btn>
-                </div>
-              </template>
-              <v-card min-width="350px" flat>
-                <v-card-title primary-title>
-                  <v-text-field :label="item.nome" v-model="nomeAlterarCurso"></v-text-field>
-                </v-card-title>
-                <v-card-actions>                  
-                  <v-spacer></v-spacer>
-                  <v-btn flat color="primary" @click="item.open = false">Cancelar</v-btn>
-                  <v-btn flat color="secundary" @click="editarCurso(item)">Salvar</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-            <v-btn fab flat small @click="removerCurso(item)">
-              <v-icon>delete</v-icon>
-            </v-btn>
-            
-          </v-list-tile>-->
         </v-list>
         <v-dialog v-model="dialog" max-width="500px">
           <v-card>
@@ -108,7 +110,7 @@
               <v-btn flat color="secundary" @click="adicionarCurso">Criar curso</v-btn>
             </v-card-actions>
           </v-card>
-        </v-dialog>
+        </v-dialog>        
       </v-card>
     </v-flex>
   </v-layout>
@@ -122,7 +124,8 @@ export default {
       dialog: false,
       nomeNovoCurso: "",
       nomeAlterarCurso: "",
-      dialogAlterar: false,
+      nomeNovaDisciplina: "",     
+      nomeAlterarDisciplina: "",
       items: []
       //[
       //  { icon: 'folder', iconClass: 'grey lighten-1 white--text', title: 'Sistemas de informação' },
@@ -132,9 +135,6 @@ export default {
     };
   },
   methods: {
-    editCursos() {
-      this.dialogAlterar = true;
-    },
     adicionarCurso() {
       // Adicionar novo curso
       this.$http
@@ -178,6 +178,7 @@ export default {
                 
                 e["open"] = false;
                 e["mostrarDisciplinas"] = false;      
+                e["cadastrarDisciplina"] = false;
 
                 this.listarDisciplinas(e);
     
@@ -234,16 +235,23 @@ export default {
         );
     },
     listarDisciplinas(curso){
-        // busca a lista de cursos cadastrados
+        // busca a lista de cursos cadastrados        
       this.$http.get(
-          "http://localhost:8080/api/disciplina/aluno/" + localStorage.getItem("user-ID") + "/" + curso.id,
+          "http://localhost:8080/api/disciplina/curso/" + curso.id,
           { headers: { "content-type": "application/json" } }
         )
         .then(
           result => {
+              debugger
             this.response = result.data;            
             console.log(this.response);
+
             curso["disciplinas"] = result.data.data.content;
+
+            curso["disciplinas"].forEach(e => {                
+                e["open"] = false;                
+            });
+            return;
           },
           error => {
             console.error(error);            
@@ -252,15 +260,84 @@ export default {
 
         curso["disciplinas"] = [];
     },
-    goToPage(where) {       
+    goToDetalhesDisciplina(disciplina) {     
+      var where = "";
+        
       if (this.$router.currentRoute.path.includes("/Dashboard/")) 
-        where = where.replace(/\s/g, '');         
+        where = "Disciplinas/" + disciplina.id;
       else 
-        where = "Dashboard/" + where.replace(/\s/g, '');  
-      
+        where = "Dashboard/Disciplinas/" + disciplina.id;      
 
       this.$router.push(where)
-    }
+    },
+    adicionarDisciplina(curso) {
+      // Adicionar nova disciplina
+      debugger
+      this.$http
+        .post(
+          "http://localhost:8080/api/disciplina",
+          '{"cursoId": ' + 
+            curso.id +
+            ', "nome": "' +
+            this.nomeNovaDisciplina +
+            '"}',
+          { headers: { "content-type": "application/json" } }
+        )
+        .then(
+          result => {
+            this.response = result.data;
+            console.log(this.response);
+          },
+          error => {
+            console.error(error);
+          }
+        );
+
+      curso.cadastrarDisciplina = false;
+    },
+    editarDisciplina(curso, disciplina) {
+      // Edita o evento
+      this.$http
+        .put(
+          "http://localhost:8080/api/disciplina/" + disciplina.id,
+          '{"cursoId": ' +
+            curso.id +
+            ', "nome": "' +
+            this.nomeAlterarDisciplina +
+            '"}',
+          { headers: { "content-type": "application/json" } }
+        )
+        .then(
+          result => {
+            this.response = result.data;
+            console.log(this.response);
+            this.listarDisciplinas(curso);
+          },
+          error => {
+            console.error(error);
+          }
+        );
+
+      curso.open = false;
+    },
+    removerDisciplina(curso, disciplina) {
+      // Remove o evento
+      debugger
+      this.$http
+        .delete("http://localhost:8080/api/disciplina/" + disciplina.id, {
+          headers: { "content-type": "application/json" }
+        })
+        .then(
+          result => {
+            this.response = result.data;
+            console.log(this.response);
+            this.listarDisciplinas(curso);
+          },
+          error => {
+            console.error(error);
+          }
+        );
+    },
   },
   beforeMount() {
     this.listarCursos();

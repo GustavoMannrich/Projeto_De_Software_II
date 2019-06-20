@@ -107,6 +107,7 @@ export default {
             where = "Dashboard/" + where.replace(/\s/g, '');  
       }
       
+      this.$router.push('/Dashboard');
       this.$router.push(where);
     },
     logout() {

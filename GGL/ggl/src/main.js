@@ -29,11 +29,11 @@ Vue.http.interceptors.push((request, next) => {
 
 const routes = [
   { path: '/', component: Login },
-  { path: '/Dashboard/', component: Dashboard, 
+  { path: '/Dashboard/', redirect: '/Dashboard/Calendar', component: Dashboard, 
   children: [
     { path: 'Calendar', component: Calendar },
     { path: 'MinhaConta', component: MinhaConta },
-    { path: 'Disciplinas', component: Disciplinas },
+    { path: 'Disciplinas/:disciplinaId', component: Disciplinas },
     { path: 'Cursos', component: Cursos }
   ] }
 ]

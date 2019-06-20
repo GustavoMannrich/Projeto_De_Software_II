@@ -13,9 +13,6 @@
             v-on="on">
             <v-icon>add</v-icon>
           </v-btn>
-  
-        
-        
         </template>
         <v-card>
           <v-card-title>
@@ -59,22 +56,17 @@
                   </v-menu>
                   
                 </v-flex>
-              
-
-               
-
               </v-layout>
             </v-container>
           </v-card-text>
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
-            <v-btn color="blue darken-1" flat @click="save">Save</v-btn>
+            <v-btn color="blue darken-1" flat @click="close">Cancelar</v-btn>
+            <v-btn color="blue darken-1" flat @click="CadastrarEvento(idDisciplina)">Salvar</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
-    <!-- </v-toolbar> -->
     <v-data-table
       :headers="headers"
       :items="desserts"
@@ -94,14 +86,11 @@
           </v-icon>
           <v-icon
             small
-            @click="deleteItem(props.item)"
+            @click="removerEvento(props.item)"
           >
             delete
           </v-icon>
         </td>
-      </template>
-      <template v-slot:no-data>
-        <v-btn color="primary" @click="initialize">Reset</v-btn>
       </template>
     </v-data-table>
   </div>
@@ -109,7 +98,10 @@
 
 <script>
   export default {
-    data: vm => ({
+    props: {
+      idDisciplina: ""
+    },
+    data: vm => ({        
       dialog: false,
       date: new Date().toISOString().substr(0, 10),
       dateFormatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
@@ -153,7 +145,7 @@
     },
     methods: {
       initialize () {
-        this.$http.get("http://localhost:8080/api/eventos/aluno/1",
+        this.$http.get("http://localhost:8080/api/eventos/disciplina/" + this.idDisciplina,
           { headers: { "content-type": "application/json" } }).then(response => {
             this.desserts = response.body.data.content;
           });
@@ -163,9 +155,16 @@
         this.editedItem = Object.assign({}, item)
         this.dialog = true
       },
-      deleteItem (item) {
-        const index = this.desserts.indexOf(item)
-        confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1)
+      removerEvento(event) {
+        // Remove o evento
+        this.$http.delete("http://localhost:8080/api/eventos/" + event.id, 
+        { headers: { "content-type": "application/json" } }).then(result => {              
+            this.response = result.data;
+            this.listarEventos();
+            //alert(this.response);
+        }, error => {
+            //alert(error);
+        });
       },
       close () {
         this.dialog = false
@@ -174,16 +173,16 @@
           this.editedIndex = -1
         }, 300)
       },
-      save () {
-        this.editedItem.alunoId = localStorage.getItem("user-ID");        
+      CadastrarEvento (idDisciplina) {                
         this.$http.post("http://localhost:8080/api/eventos", 
-            '{"alunoId": ' + localStorage.getItem("user-ID") + ', "nome": "' + this.nomeNovoCurso + '"}', 
+            '{"disciplinaId": ' + idDisciplina + ', "data": "' + this.editedItem.data + '", "descricao": "' + this.editedItem.descricao + '", "titulo": "' + this.editedItem.titulo + '"}', 
           { headers: { "content-type": "application/json" } }).then(result => {
+              debugger
               this.response = result.data;
-              alert('sucesso' + this.response);
+              //alert('sucesso' + this.response);
               this.listarCursos();
           }, error => {
-              alert(error);
+              //alert(error);
           });
         this.close()
       },

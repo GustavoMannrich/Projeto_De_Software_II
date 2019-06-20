@@ -231,7 +231,7 @@
       // Edita o evento      
       debugger
       this.$http.post("http://localhost:8080/api/eventos", 
-        '{"alunoId": ' + localStorage.getItem("user-ID") + ', "data": "' + event.data + '", "descricao": "' + event.descricao + '", "titulo": "' + event.titulo + '"}', 
+        '{"disciplinaId": ' + ', "data": "' + event.data + '", "descricao": "' + event.descricao + '", "titulo": "' + event.titulo + '"}', 
       { headers: { "content-type": "application/json" } }).then(result => {              
           this.response = result.data;
           this.listarEventos();
@@ -245,7 +245,7 @@
     editarEvento(event) {
       // Edita o evento      
       this.$http.put("http://localhost:8080/api/eventos/" + event.id, 
-        '{"alunoId": ' + localStorage.getItem("user-ID") + ', "data": "' + event.data + '", "descricao": "' + event.descricao + '", "titulo": "' + event.titulo + '"}', 
+        '{"disciplinaId": ' + event.disciplina_Id + ', "data": "' + event.data + '", "descricao": "' + event.descricao + '", "titulo": "' + event.titulo + '"}', 
       { headers: { "content-type": "application/json" } }).then(result => {              
           this.response = result.data;
           this.listarEventos();

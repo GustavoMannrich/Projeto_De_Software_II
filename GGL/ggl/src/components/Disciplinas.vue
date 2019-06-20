@@ -22,7 +22,7 @@
         :value="content"
       >
         <v-card height="200px" flat>
-          <TableEventos v-if="isEvents(content)"/>
+          <TableEventos :idDisciplina=getIdDisciplina() v-if="isEvent(content)"/>
           <Files v-if="isFiles(content)"/>
         </v-card>
       </v-tab-item>
@@ -33,8 +33,7 @@
 <script>
   import TableEventos from '@/components/TableEventos'
   import Files from '@/components/Files'
-  export default {
-    props: ['idDisciplina'],
+  export default {    
     components:{
       TableEventos,
       Files
@@ -42,7 +41,7 @@
     data: () => ({
       fab: false,
       hidden: false,
-      tabs: null,
+      tabs: null
     }),
     methods: {
       isEvents(tab) {
@@ -50,6 +49,9 @@
       },
       isFiles(tab) {
         return tab == 'files'
+      },
+      getIdDisciplina() {
+          return this.$router.history.current.params.disciplinaId;
       }
     }
   }
