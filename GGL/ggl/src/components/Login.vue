@@ -93,6 +93,7 @@ export default {
                     this.response = result.data;
                     localStorage.setItem('user-name', result.data.data.nome);
                     localStorage.setItem('user-ID', result.data.data.id);
+                    localStorage.setItem('user-email', this.input.email);
                     this.navigateTo("/Dashboard");
                 }, error => {            
                     this.alerta_invalido = true;

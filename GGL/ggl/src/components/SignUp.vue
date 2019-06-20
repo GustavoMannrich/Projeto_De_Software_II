@@ -69,6 +69,7 @@ export default {
       this.dialog = false;
     },    
     sendData() {
+      debugger;
       this.alerta_vazio = false;
       this.alerta_senha = false;
 

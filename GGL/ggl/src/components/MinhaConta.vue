@@ -1,98 +1,86 @@
 <template>
-  <v-form
-    ref="form"
-    v-model="valid"
-    lazy-validation
-  >
-    <v-text-field
-      v-model="name"
-      :counter="10"
-      :rules="nameRules"
-      label="Name"
-      required
-    ></v-text-field>
-
-    <v-text-field
-      v-model="email"
-      :rules="emailRules"
-      label="E-mail"
-      required
-    ></v-text-field>
-
-    <v-select
-      v-model="select"
-      :items="items"
-      :rules="[v => !!v || 'Item is required']"
-      label="Item"
-      required
-    ></v-select>
-
-    <v-checkbox
-      v-model="checkbox"
-      :rules="[v => !!v || 'You must agree to continue!']"
-      label="Do you agree?"
-      required
-    ></v-checkbox>
-
-    <v-btn
-      :disabled="!valid"
-      color="success"
-      @click="validate"
-    >
-      Validate
-    </v-btn>
-
-    <v-btn
-      color="error"
-      @click="reset"
-    >
-      Reset Form
-    </v-btn>
-
-    <v-btn
-      color="warning"
-      @click="resetValidation"
-    >
-      Reset Validation
-    </v-btn>
-  </v-form>
+  <v-app id="inspire">
+    <v-content>
+      <v-container fluid fill-height>
+        <v-layout align-center justify-center>
+          <v-flex xs12 sm8 md4>
+            <v-card class="elevation-12">
+              <v-toolbar dark color="primary">
+                <v-toolbar-title>Minha conta</v-toolbar-title>
+              </v-toolbar>
+              <v-card-text>
+                <v-form>
+                  <v-text-field prepend-icon="person" name="nome" label="Nome" type="nome" v-model="input.nome" :rules="[rules.required]"></v-text-field>
+                  <v-text-field prepend-icon="email" name="email" label="E-mail" type="email" v-model="input.email" :rules="[rules.required]"></v-text-field>
+                  <v-text-field id="password" prepend-icon="lock" name="password" label="Nova senha" type="password"  v-model="input.senha" :rules="[rules.required]" ></v-text-field>
+                  
+                  <v-checkbox :label="`Enviar notificações por e-mail:`"></v-checkbox>
+                </v-form>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn @click="postAluno()" color="primary">Salvar</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
   export default {
     data: () => ({
-      valid: true,
-      name: '',
-      nameRules: [
-        v => !!v || 'Name is required',
-        v => (v && v.length <= 10) || 'Name must be less than 10 characters'
-      ],
-      email: '',
-      emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+/.test(v) || 'E-mail must be valid'
-      ],
-      select: null,
-      items: [
-        'Item 1',
-        'Item 2',
-        'Item 3',
-        'Item 4'
-      ],
-      checkbox: false
-    }),
-    methods: {
-      validate () {
-        if (this.$refs.form.validate()) {
-          this.snackbar = true
-        }
+      drawer: null,
+      alerta_vazio: false,
+      alerta_senha: false,
+      input: {
+        nome: '',
+        email: '',
+        senha: '',      
+        //enviarEmail: true,        
       },
-      reset () {
-        this.$refs.form.reset()
-      },
-      resetValidation () {
-        this.$refs.form.resetValidation()
+      rules: {
+        required: value => !!value || 'Campo obrigatório.',
+        min: v => v.length >= 6 || 'Email deve ter no mínimo 6 caracteres.',
+        max: v => v.length <= 200 || 'Email deve ter no máximo 200 caracteres.'
       }
+    }),
+    props: {
+      source: String
+    },    
+    beforeMount() {
+      this.getAluno();
+    },
+    methods:{
+      getAluno(){
+        this.$http.get("http://localhost:8080/api/alunos/" + localStorage.getItem('user-email'), { headers: { "content-type": "application/json" } }).then(result => {              
+            this.response = result.data;
+            this.input.nome   = result.data.data.nome;
+            this.input.email  = result.data.data.email;                                
+        }, error => {
+            alert(error);
+        });
+      },
+      postAluno(){
+      this.alerta_vazio = false;
+      this.alerta_senha = false;
+
+      if (this.input.email == "" || this.input.senha == "" || this.input.nome == "") {
+          this.alerta_vazio = true;
+          return;
+      }  
+
+      // Cadastra o novo aluno
+      this.$http.put("http://localhost:8080/api/alunos/" + localStorage.getItem('user-ID'), this.input, { headers: { "content-type": "application/json"} }).then(result => { 
+                     
+          this.response = result.data;
+          alert(result.data);
+      }, error => {
+          alert(error);
+      });
+      }      
     }
   }
 </script>

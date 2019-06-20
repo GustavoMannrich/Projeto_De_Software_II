@@ -91,7 +91,7 @@
             delete
           </v-icon>
         </td>
-      </template>
+      </template>    
     </v-data-table>
   </div>
 </template>
@@ -101,7 +101,7 @@
     props: {
       idDisciplina: ""
     },
-    data: vm => ({        
+    data: vm => ({
       dialog: false,
       date: new Date().toISOString().substr(0, 10),
       dateFormatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
@@ -212,8 +212,9 @@
         return `${day}/${month}/${year}`
       },
       parseDate (date) {
+        //debugger;
         if (!date) return null
-        const [month, day, year] = date.split('/')
+        const [day, month, year] = date.split('/')
         return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
       }    
     }

@@ -169,8 +169,7 @@
               fileType: files[0].type,
               size: files[0].size,
               alunoId: localStorage.getItem("user-ID")
-          };
-          debugger;
+          };          
           const fileReader = new FileReader();
           fileReader.addEventListener('load', () => {
               this.fileInfo.fileDownloadUri = fileReader.result;
