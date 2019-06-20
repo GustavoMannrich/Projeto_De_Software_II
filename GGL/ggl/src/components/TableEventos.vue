@@ -24,15 +24,21 @@
 
           <v-card-text>
             <v-container grid-list-md>
-              <v-layout wrap>
-                 <!-- data picker -->
-                 <v-flex xs12 lg6>
+              <v-layout wrap>  
+
+                <v-flex xs12>
+                  <v-text-field v-model="editedItem.titulo" label="Titulo"></v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-text-field v-model="editedItem.descricao" label="Descrição"></v-text-field>
+                </v-flex>
+
+                <v-flex xs12 lg6>
                   <v-menu
                     ref="menu1"
                     v-model="menu1"
                     :close-on-content-click="false"
-                    :nudge-right="40"
-                    lazy
+                    :nudge-right="40"                    
                     transition="scale-transition"
                     offset-y
                     full-width
@@ -45,24 +51,15 @@
                         label="Date"                        
                         persistent-hint
                         prepend-icon="event"
-                        @blur="date = parseDate(dateFormatted)"
+                        @blur="editedItem.data = parseDate(dateFormatted)"
                         v-on="on"
                       ></v-text-field>
                     </template>
-                    <v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
+                    <v-date-picker v-model="editedItem.data" no-title @input="menu1 = false"></v-date-picker>
                   </v-menu>
                   
                 </v-flex>
-
-                <v-flex xs12>
-                  <v-text-field v-model="editedItem.titulo" label="Titulo"></v-text-field>
-                </v-flex>
-                <v-flex xs12>
-                  <v-text-field v-model="editedItem.descricao" label="descrição"></v-text-field>
-                </v-flex>
-                <v-flex xs12>
-                  <v-text-field v-model="editedItem.data" label="data"></v-text-field>
-                </v-flex>
+              
 
                
 
@@ -183,7 +180,7 @@
             '{"alunoId": ' + localStorage.getItem("user-ID") + ', "nome": "' + this.nomeNovoCurso + '"}', 
           { headers: { "content-type": "application/json" } }).then(result => {
               this.response = result.data;
-              alert(this.response);
+              alert('sucesso' + this.response);
               this.listarCursos();
           }, error => {
               alert(error);
