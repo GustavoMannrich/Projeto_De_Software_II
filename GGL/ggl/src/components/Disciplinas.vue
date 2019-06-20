@@ -21,9 +21,9 @@
         :key="content"
         :value="content"
       >
-        <v-card height="200px" flat>                        
-          <TableEventos v-if="isEvent(content)"/>
-          <!--<Calendar v-if="isCalendar(content)"/>-->
+        <v-card height="200px" flat>
+          <TableEventos v-if="isEvents(content)"/>
+          <Files v-if="isFiles(content)"/>
         </v-card>
       </v-tab-item>
     </v-tabs-items>
@@ -32,12 +32,12 @@
 
 <script>
   import TableEventos from '@/components/TableEventos'
-  import Calendar from '@/components/Calendar'
+  import Files from '@/components/Files'
   export default {
     props: ['idDisciplina'],
     components:{
       TableEventos,
-      Calendar
+      Files
     },
     data: () => ({
       fab: false,
@@ -45,12 +45,23 @@
       tabs: null,
     }),
     methods: {
-      isEvent(tab) {
+      isEvents(tab) {
         return tab == 'events';
       },
-      isCalendar(tab) {
+      isFiles(tab) {
         return tab == 'files'
       }
     }
   }
 </script>
+
+<style>
+  /* This is for documentation purposes and will not be needed in your application */
+  #lateral .v-speed-dial,
+  #lateral .v-btn--floating {
+    position: absolute;
+  }
+  #lateral .v-btn--floating {
+    margin: 0 0 16px 16px;
+  }
+</style>
