@@ -1,6 +1,6 @@
 <template>
   <div id="lateral">
-    <v-toolbar dark tabs flat color="indigo">
+    <v-toolbar dark tabs flat color="blue">
       <v-toolbar-title>{{idDisciplina}}</v-toolbar-title>
       
       <template v-slot:extension>

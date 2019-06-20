@@ -182,7 +182,6 @@
           this.$http.put("http://localhost:8080/api/eventos/" + this.editedItem.id, 
             '{"disciplinaId": ' + idDisciplina + ', "data": "' + this.editedItem.data + '", "descricao": "' + this.editedItem.descricao + '", "titulo": "' + this.editedItem.titulo + '"}', 
           { headers: { "content-type": "application/json" } }).then(result => {
-              debugger
               this.response = result.data;
               //alert('sucesso' + this.response);
               this.carregarEventos();
@@ -195,7 +194,6 @@
           this.$http.post("http://localhost:8080/api/eventos", 
             '{"disciplinaId": ' + idDisciplina + ', "data": "' + this.editedItem.data + '", "descricao": "' + this.editedItem.descricao + '", "titulo": "' + this.editedItem.titulo + '"}', 
           { headers: { "content-type": "application/json" } }).then(result => {
-              debugger
               this.response = result.data;
               //alert('sucesso' + this.response);
               this.carregarEventos();
@@ -212,7 +210,6 @@
         return `${day}/${month}/${year}`
       },
       parseDate (date) {
-        //debugger;
         if (!date) return null
         const [day, month, year] = date.split('/')
         return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`

@@ -229,7 +229,6 @@
     },    
     adicionarEvento(event) {
       // Edita o evento      
-      debugger
       this.$http.post("http://localhost:8080/api/eventos", 
         '{"disciplinaId": ' + ', "data": "' + event.data + '", "descricao": "' + event.descricao + '", "titulo": "' + event.titulo + '"}', 
       { headers: { "content-type": "application/json" } }).then(result => {              

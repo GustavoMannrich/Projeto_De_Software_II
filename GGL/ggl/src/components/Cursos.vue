@@ -242,7 +242,6 @@ export default {
         )
         .then(
           result => {
-              debugger
             this.response = result.data;            
             console.log(this.response);
 
@@ -272,7 +271,6 @@ export default {
     },
     adicionarDisciplina(curso) {
       // Adicionar nova disciplina
-      debugger
       this.$http
         .post(
           "http://localhost:8080/api/disciplina",
@@ -322,7 +320,6 @@ export default {
     },
     removerDisciplina(curso, disciplina) {
       // Remove o evento
-      debugger
       this.$http
         .delete("http://localhost:8080/api/disciplina/" + disciplina.id, {
           headers: { "content-type": "application/json" }

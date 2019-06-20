@@ -14,7 +14,7 @@
                   <v-text-field prepend-icon="email" name="email" label="E-mail" type="email" v-model="input.email" :rules="[rules.required]"></v-text-field>
                   <v-text-field id="password" prepend-icon="lock" name="password" label="Nova senha" type="password"  v-model="input.senha" :rules="[rules.required]" ></v-text-field>
                   
-                  <v-checkbox :label="`Enviar notificações por e-mail:`"></v-checkbox>
+                  <v-checkbox v-model="input.receber_notificacoes" :label="'Receber notificações por e-mail'"></v-checkbox>
                 </v-form>
               </v-card-text>
               <v-card-actions>
@@ -38,7 +38,8 @@
       input: {
         nome: '',
         email: '',
-        senha: '',      
+        senha: '',    
+        receber_notificacoes: false,  
         //enviarEmail: true,        
       },
       rules: {
@@ -60,26 +61,26 @@
             this.input.nome   = result.data.data.nome;
             this.input.email  = result.data.data.email;                                
         }, error => {
-            alert(error);
+            //alert(error);
         });
       },
       postAluno(){
-      this.alerta_vazio = false;
-      this.alerta_senha = false;
+        this.alerta_vazio = false;
+        this.alerta_senha = false;
 
-      if (this.input.email == "" || this.input.senha == "" || this.input.nome == "") {
-          this.alerta_vazio = true;
-          return;
-      }  
+        if (this.input.email == "" || this.input.senha == "" || this.input.nome == "") {
+            this.alerta_vazio = true;
+            return;
+        }  
 
-      // Cadastra o novo aluno
-      this.$http.put("http://localhost:8080/api/alunos/" + localStorage.getItem('user-ID'), this.input, { headers: { "content-type": "application/json"} }).then(result => { 
-                     
-          this.response = result.data;
-          alert(result.data);
-      }, error => {
-          alert(error);
-      });
+        // Cadastra o novo aluno
+        this.$http.put("http://localhost:8080/api/alunos/" + localStorage.getItem('user-ID'), this.input, { headers: { "content-type": "application/json"} }).then(result => { 
+                        
+            this.response = result.data;
+            //alert(result.data);
+        }, error => {
+            //alert(error);
+        });
       }      
     }
   }
