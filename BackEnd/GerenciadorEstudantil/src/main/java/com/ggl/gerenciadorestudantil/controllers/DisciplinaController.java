@@ -28,11 +28,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ggl.gerenciadorestudantil.dtos.DisciplinaDto;
-import com.ggl.gerenciadorestudantil.entities.Aluno;
 import com.ggl.gerenciadorestudantil.entities.Curso;
 import com.ggl.gerenciadorestudantil.entities.Disciplina;
 import com.ggl.gerenciadorestudantil.response.Response;
-import com.ggl.gerenciadorestudantil.services.AlunoService;
 import com.ggl.gerenciadorestudantil.services.CursoService;
 import com.ggl.gerenciadorestudantil.services.DisciplinaService;
 

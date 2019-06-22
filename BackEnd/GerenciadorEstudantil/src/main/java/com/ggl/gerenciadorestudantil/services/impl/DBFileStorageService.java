@@ -7,12 +7,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-import com.ggl.gerenciadorestudantil.entities.Aluno;
 import com.ggl.gerenciadorestudantil.entities.DBFile;
 import com.ggl.gerenciadorestudantil.entities.Disciplina;
 import com.ggl.gerenciadorestudantil.exceptions.FileStorageException;
 import com.ggl.gerenciadorestudantil.exceptions.MyFileNotFoundException;
-import com.ggl.gerenciadorestudantil.repositories.AlunoRepository;
 import com.ggl.gerenciadorestudantil.repositories.DBFileRepository;
 import com.ggl.gerenciadorestudantil.repositories.DisciplinaRepository;
 
