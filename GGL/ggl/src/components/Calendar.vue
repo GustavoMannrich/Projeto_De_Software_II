@@ -9,11 +9,7 @@
       class="text-sm-left text-xs-center"
     >
       <v-btn fab small @click="$refs.calendar.prev()">
-        <v-icon
-          dark
-          
-          
-        >
+        <v-icon dark>
           keyboard_arrow_left
         </v-icon>
         
@@ -35,9 +31,7 @@
     >
       <v-btn fab small  @click="$refs.calendar.next()">
         
-        <v-icon          
-          dark
-        >
+        <v-icon dark>
           keyboard_arrow_right
         </v-icon>
       </v-btn>
@@ -77,11 +71,11 @@
                   >                    
                     <v-toolbar-title v-html="event.titulo"></v-toolbar-title>
                     <v-spacer></v-spacer>
-                    <v-btn icon @click="editarEvento(event)">
+                    <v-btn fab flat icon ripple @click="editarEvento(event)">
                       <v-icon>edit</v-icon>
                     </v-btn>
-                    <v-btn icon>
-                      <v-icon @click="removerEvento(event)">delete</v-icon>
+                    <v-btn fab flat icon ripple @click="removerEvento(event)">
+                      <v-icon>delete</v-icon>
                     </v-btn>
                   </v-toolbar>
                   <v-card-title primary-title>
@@ -93,7 +87,7 @@
                       color="primary"
                       @click="event.open = false"
                     >
-                      Cancel
+                      Cancelar
                     </v-btn>
                   </v-card-actions>
                 </v-card>
@@ -101,54 +95,7 @@
             </div>
             </template>
           </template>
-        </v-calendar>
-        <v-btn fab small color="cyan accent-2" bottom right absolute @click="dialog = !dialog">
-            <v-icon>add</v-icon>
-        </v-btn>  
-        <v-dialog v-model="dialog" max-width="500px">
-          <v-card>
-            <v-card-text>
-                <v-text-field label="Evento" v-model="novoEvento.titulo"></v-text-field>
-            </v-card-text>
-            <v-card-text>
-                <v-text-field label="Descrição" v-model="novoEvento.descricao"></v-text-field>
-            </v-card-text>
-            <v-card-text>
-                <!-- data picker -->
-                 <v-flex xs12 lg6>
-                  <v-menu
-                    ref="menu1"
-                    v-model="menu1"
-                    :close-on-content-click="false"
-                    :nudge-right="40"
-                    lazy
-                    transition="scale-transition"
-                    offset-y
-                    full-width
-                    max-width="290px"
-                    min-width="290px"
-                  >
-                    <template v-slot:activator="{ on }">
-                      <v-text-field
-                        v-model="dateFormatted"
-                        label="Date"                        
-                        persistent-hint
-                        prepend-icon="event"
-                        @blur="date = parseDate(dateFormatted)"
-                        v-on="on"
-                      ></v-text-field>
-                    </template>
-                    <v-date-picker v-model="novoEvento.data" no-title @input="menu1 = false"></v-date-picker>
-                  </v-menu>                  
-                </v-flex>                 
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn flat color="primary" @click="dialog = false">Cancelar</v-btn>
-              <v-btn flat color="secundary" @click="adicionarEvento(novoEvento)">Criar evento</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>      
+        </v-calendar>     
       </v-sheet>
     </v-flex>
     
@@ -160,41 +107,10 @@
     data: vm => ({
       today: undefined,      
       buscouEventos: false,
-      nomeNovoEvento: "",
-      dialog: false,
       date: new Date().toISOString().substr(0, 10),
       dateFormatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
-      menu1: false,
-      novoEvento: {
-                    titulo: '',
-                    descricao: '',
-                    data: ''
-                  },
       events: []
-       /* {
-          titulo: '',
-          descricao: '',
-          data: '',
-          open: false
-        }
-      ]
-        {
-          title: 'Vacation',
-          details: 'Going to the beach!',
-          date: '2018-12-30',
-          open: false
-        }
-      ]*/
     }),
-    computed: {
-    // convert the list of events into a map of lists keyed by date
-    /*eventsMap (day) {
-        const map = {}     
-
-        //this.events.forEach(e => (map[e.data] = map[e.data] || []).push(e))
-        return map
-    }*/   
-    },
     beforeMount() {
         this.listarEventos();
         this.initialize()
@@ -203,14 +119,9 @@
       
     },
     methods: {
-    initialize() { 
-               
+    initialize() {
         this.today = this.getCurrentDate();          
     },
-    /*open (event) {
-      alert(event.title)
-    },*/
-
     listarEventos(){           
       this.$http.get("http://localhost:8080/api/eventos/aluno/" + localStorage.getItem("user-ID"),
       { headers: { "content-type": "application/json" } }).then(response => {
@@ -227,20 +138,6 @@
         });*/
       })              
     },    
-    adicionarEvento(event) {
-      // Edita o evento      
-      this.$http.post("http://localhost:8080/api/eventos", 
-        '{"disciplinaId": ' + ', "data": "' + event.data + '", "descricao": "' + event.descricao + '", "titulo": "' + event.titulo + '"}', 
-      { headers: { "content-type": "application/json" } }).then(result => {              
-          this.response = result.data;
-          this.listarEventos();
-          //alert(this.response);
-      }, error => {
-          //alert(error);
-      });
-
-      this.dialog = false;
-    },
     editarEvento(event) {
       // Edita o evento      
       this.$http.put("http://localhost:8080/api/eventos/" + event.id, 
@@ -274,19 +171,19 @@
       return hoje;
     },
     getCurrentMonth(){                
-      var meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']; 
+      var meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];     
       var hoje = this.today === undefined ? new Date() : new Date(this.today);
       return meses[hoje.getMonth()] + ' de ' + hoje.getFullYear().toString();
     },
     formatDate (date) {
-        if (!date) return null
-        const [year, month, day] = date.split('-')
-        return `${day}/${month}/${year}`
+      if (!date) return null
+      const [year, month, day] = date.split('-')
+      return `${day}/${month}/${year}`
     },
-        parseDate (date) {
-        if (!date) return null
-        const [month, day, year] = date.split('/')
-        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+      parseDate (date) {
+      if (!date) return null
+      const [month, day, year] = date.split('/')
+      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
     } 
     }
   }

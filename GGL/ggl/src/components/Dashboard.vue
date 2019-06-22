@@ -25,6 +25,7 @@
       <v-spacer></v-spacer>
       <v-layout row align-center style="max-width: 650px"></v-layout>
       <v-btn color="primary" right>
+        <v-icon small>person</v-icon>
         <span v-html="usename"></span>
       </v-btn>
       <v-btn color="secundary" right flat @click="logout()">

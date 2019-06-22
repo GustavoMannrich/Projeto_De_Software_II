@@ -17,7 +17,7 @@
             <!-- We can't use a normal button element here, as it would become the target of the label. -->
             <div class="upload-button">
               <v-btn fab flat icon ripple @click="submitFiles()">
-                  <v-icon color="grey lighten-1">cloud_upload</v-icon>
+                  <v-icon>cloud_upload</v-icon>
                 </v-btn>
             </div>            
           </label>
@@ -28,9 +28,8 @@
   
             <v-list-tile
               v-for="item in items"
-              :key="item.title"
+              :key="item.id"
               avatar
-              @click=""
             >
               <v-list-tile-avatar>
                 <v-icon>assignment</v-icon>
@@ -43,12 +42,12 @@
   
               <v-list-tile-action>
                 <v-btn fab flat icon ripple @click="downloadArquivo(item)">
-                  <v-icon color="grey lighten-1">cloud_download</v-icon>
+                  <v-icon>cloud_download</v-icon>
                 </v-btn>
                 </v-list-tile-action>
                 <v-list-tile-action>
-                <v-btn fab flat icon @click="removerArquivo(item)">
-                  <v-icon color="grey lighten-1">delete</v-icon>
+                <v-btn fab flat icon ripple @click="removerArquivo(item)">
+                  <v-icon>delete</v-icon>
                 </v-btn>
               </v-list-tile-action>
             </v-list-tile>

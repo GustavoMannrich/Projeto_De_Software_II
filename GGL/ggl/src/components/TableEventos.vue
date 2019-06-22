@@ -3,14 +3,7 @@
     <!-- <v-toolbar flat color="white"> -->
       <v-dialog v-model="dialog" max-width="500px">
         <template v-slot:activator="{ on }">
-          <!-- <v-btn right class="mb-2" v-on="on"><v-icon>add</v-icon></v-btn> -->
-    
-          <v-btn fab
-            small            
-            top
-            right
-            absolute
-            v-on="on">
+          <v-btn fab small top right absolute color="cyan accent-2" v-on="on">
             <v-icon>add</v-icon>
           </v-btn>
         </template>
@@ -22,20 +15,19 @@
           <v-card-text>
             <v-container grid-list-md>
               <v-layout wrap>  
-
                 <v-flex xs12>
                   <v-text-field v-model="editedItem.titulo" label="Titulo"></v-text-field>
                 </v-flex>
                 <v-flex xs12>
                   <v-text-field v-model="editedItem.descricao" label="Descrição"></v-text-field>
                 </v-flex>
-
                 <v-flex xs12 lg6>
                   <v-menu
                     ref="menu1"
                     v-model="menu1"
                     :close-on-content-click="false"
-                    :nudge-right="40"                    
+                    :nudge-right="40"
+                    lazy
                     transition="scale-transition"
                     offset-y
                     full-width
@@ -45,16 +37,16 @@
                     <template v-slot:activator="{ on }">
                       <v-text-field
                         v-model="dateFormatted"
-                        label="Date"                        
+                        label="Date"
+                        hint="MM/DD/YYYY format"
                         persistent-hint
                         prepend-icon="event"
-                        @blur="editedItem.data = parseDate(dateFormatted)"
+                        @blur="date = parseDate(dateFormatted)"
                         v-on="on"
                       ></v-text-field>
                     </template>
-                    <v-date-picker v-model="editedItem.data" no-title @input="menu1 = false"></v-date-picker>
+                    <v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
                   </v-menu>
-                  
                 </v-flex>
               </v-layout>
             </v-container>
@@ -69,27 +61,20 @@
       </v-dialog>
     <v-data-table
       :headers="headers"
-      :items="desserts"
+      :items="eventos"
       class="elevation-1"
     >
       <template v-slot:items="props">
         <td>{{ props.item.titulo }}</td>
         <td class="text-xs-left">{{ props.item.descricao }}</td>
-        <td class="text-xs-left">{{ props.item.data }}</td>       
+        <td class="text-xs-left" v-html="formatDate(props.item.data)"></td>       
         <td class="justify-center layout px-0">
-          <v-icon
-            small
-            class="mr-2"
-            @click="editItem(props.item)"
-          >
-            edit
-          </v-icon>
-          <v-icon
-            small
-            @click="removerEvento(props.item)"
-          >
-            delete
-          </v-icon>
+          <v-btn small fab flat icon ripple @click="editItem(props.item)">
+            <v-icon>edit</v-icon>
+          </v-btn>
+          <v-btn small fab flat icon ripple @click="removerEvento(props.item)">
+            <v-icon>delete</v-icon>
+          </v-btn>
         </td>
       </template>    
     </v-data-table>
@@ -111,7 +96,7 @@
         { text: 'Descrição', value: 'descricao' },
         { text: 'Data', value: 'data' }
       ],
-      desserts: [],
+      eventos: [],
       editedIndex: -1,
       editando: false,
       editedItem: {
@@ -134,9 +119,6 @@
       }
     },
     watch: {
-      dialog (val) {
-        val || this.close()
-      },
       date (val) {
         this.dateFormatted = this.formatDate(this.date)
       }
@@ -148,11 +130,11 @@
       carregarEventos () {
         this.$http.get("http://localhost:8080/api/eventos/disciplina/" + this.idDisciplina,
           { headers: { "content-type": "application/json" } }).then(response => {
-            this.desserts = response.body.data.content;
+            this.eventos = response.body.data.content;
             return;
           });
 
-        this.desserts = [];
+        this.eventos = [];
       },
       editItem (item) {  
         this.editando = true;        
@@ -180,7 +162,7 @@
       CadastrarEvento (idDisciplina) {         
         if (this.editando) {
           this.$http.put("http://localhost:8080/api/eventos/" + this.editedItem.id, 
-            '{"disciplinaId": ' + idDisciplina + ', "data": "' + this.editedItem.data + '", "descricao": "' + this.editedItem.descricao + '", "titulo": "' + this.editedItem.titulo + '"}', 
+            '{"disciplinaId": ' + idDisciplina + ', "data": "' + this.date + '", "descricao": "' + this.editedItem.descricao + '", "titulo": "' + this.editedItem.titulo + '"}', 
           { headers: { "content-type": "application/json" } }).then(result => {
               this.response = result.data;
               //alert('sucesso' + this.response);
@@ -192,7 +174,7 @@
           this.editando = false;
         } else {
           this.$http.post("http://localhost:8080/api/eventos", 
-            '{"disciplinaId": ' + idDisciplina + ', "data": "' + this.editedItem.data + '", "descricao": "' + this.editedItem.descricao + '", "titulo": "' + this.editedItem.titulo + '"}', 
+            '{"disciplinaId": ' + idDisciplina + ', "data": "' + this.date + '", "descricao": "' + this.editedItem.descricao + '", "titulo": "' + this.editedItem.titulo + '"}', 
           { headers: { "content-type": "application/json" } }).then(result => {
               this.response = result.data;
               //alert('sucesso' + this.response);
@@ -213,7 +195,7 @@
         if (!date) return null
         const [day, month, year] = date.split('/')
         return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
-      }    
+      }
     }
   }
 </script>
