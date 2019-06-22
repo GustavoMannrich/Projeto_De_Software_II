@@ -23,7 +23,7 @@
       >
         <v-card height="200px" flat>
           <TableEventos :idDisciplina=getIdDisciplina() v-if="isEvent(content)"/>
-          <Files v-if="isFiles(content)"/>
+          <Files :idDisciplina=getIdDisciplina() v-if="isFiles(content)"/>
         </v-card>
       </v-tab-item>
     </v-tabs-items>

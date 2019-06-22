@@ -28,7 +28,7 @@
                         <template v-slot:activator="{ on }">
                             <div v-ripple v-on="on">
                                 <v-btn fab flat small @click="cadastrarDisciplina = true">
-                                    <v-icon>add_alarm</v-icon>
+                                    <v-icon>add_circle_outline</v-icon>
                                 </v-btn>
                             </div>
                         </template>
