@@ -26,6 +26,6 @@ public interface DBFileRepository extends JpaRepository<DBFile, String> {
 	//@Query(value = "SELECT a FROM files a INNER JOIN aluno b ON b.id = :alunoId", nativeQuery = true)
 	//Page<DBFile> findByAlunoIdWithPagination(@Param("alunoId") Integer alunoId, Pageable pageable);
 	
-	@Query(value = "SELECT a FROM files a WHERE a.disciplina_Id = :disciplinaId", nativeQuery = true)
+	@Query(value = "SELECT * FROM files a WHERE a.disciplina_Id = :disciplinaId", nativeQuery = true)
 	Page<DBFile> findByDisciplinaId(@Param("disciplinaId") Integer disciplinaId, Pageable pageable);
 }
